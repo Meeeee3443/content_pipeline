@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   generate:
-    if: contains(github.event.issue.labels.*.name, 'content-request')
+    if: startsWith(github.event.issue.title, '[Content]')
     runs-on: ubuntu-latest
     timeout-minutes: 120
 

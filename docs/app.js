@@ -23,9 +23,10 @@ function buildIssueUrl(form) {
 
 function initForm() {
   const form = document.getElementById("request-form");
-  if (!form) return;
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  const btn = document.getElementById("generate-btn");
+  if (!form || !btn) return;
+  btn.addEventListener("click", () => {
+    if (!form.reportValidity()) return;
     const url = buildIssueUrl(form);
     window.open(url, "_blank");
   });

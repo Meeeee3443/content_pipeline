@@ -11,3 +11,9 @@ venv/
 .vscode/
 tmp/
 *.tmp
+
+# Claude Code local settings
+.claude/
+
+# Playwright MCP test artifacts
+.playwright-mcp/
