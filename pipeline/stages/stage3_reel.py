@@ -9,16 +9,12 @@ from ..utils import pexels, ffmpeg_helpers as ff
 WIDTH, HEIGHT = 1080, 1920
 
 
-async def _tts(text: str, voice: str, audio_dst: Path, srt_dst: Path) -> None:
+async def _tts(text: str, voice: str, audio_dst: Path) -> None:
     communicate = edge_tts.Communicate(text=text, voice=voice)
-    submaker = edge_tts.SubMaker()
     with open(audio_dst, "wb") as fh:
         async for chunk in communicate.stream():
             if chunk["type"] == "audio":
                 fh.write(chunk["data"])
-            elif chunk["type"] == "WordBoundary":
-                submaker.feed(chunk)
-    srt_dst.write_text(submaker.get_srt(), encoding="utf-8")
 
 
 def run(reel_script: str, keywords: list[str], voice: str, out_dir: Path, work_dir: Path) -> dict:
@@ -27,10 +23,14 @@ def run(reel_script: str, keywords: list[str], voice: str, out_dir: Path, work_d
     work_dir.mkdir(parents=True, exist_ok=True)
 
     audio = work_dir / "voice.mp3"
-    srt = work_dir / "subs.srt"
-    asyncio.run(_tts(reel_script, voice, audio, srt))
+    asyncio.run(_tts(reel_script, voice, audio))
     audio_dur = ff.probe_duration(audio)
     print(f"  TTS duration: {audio_dur:.1f}s")
+
+    srt = work_dir / "subs.srt"
+    srt_text = ff.make_srt(reel_script, audio_dur, words_per_cue=5)
+    srt.write_text(srt_text, encoding="utf-8")
+    print(f"  SRT: {len(srt_text)} chars, {srt_text.count(chr(10))} lines")
 
     clip_seconds = 4.0
     n_clips = max(3, int(audio_dur / clip_seconds) + 1)

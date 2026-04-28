@@ -52,19 +52,58 @@ def concat_clips(clips: list[Path], dst: Path) -> None:
     listfile.unlink(missing_ok=True)
 
 
-def mux_audio_subs(video: Path, audio: Path, srt: Path, dst: Path) -> None:
-    vf = (
-        f"subtitles={srt.as_posix()}:force_style="
-        "'FontName=DejaVu Sans,FontSize=18,PrimaryColour=&H00FFFFFF,"
-        "OutlineColour=&H00000000,BorderStyle=1,Outline=2,Shadow=0,"
-        "Alignment=2,MarginV=40'"
-    )
-    run([
-        "ffmpeg", "-y",
-        "-i", str(video), "-i", str(audio),
-        "-vf", vf,
-        "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-        "-c:a", "aac", "-b:a", "128k",
-        "-shortest",
-        str(dst),
-    ])
+def mux_audio_subs(video: Path, audio: Path, srt: Path | None, dst: Path) -> None:
+    cmd = ["ffmpeg", "-y", "-i", str(video), "-i", str(audio)]
+    if srt and srt.exists() and srt.stat().st_size > 0:
+        srt_abs = srt.resolve().as_posix().replace(":", "\\:")
+        vf = (
+            f"subtitles='{srt_abs}':force_style="
+            "'FontName=DejaVu Sans,FontSize=18,PrimaryColour=&H00FFFFFF,"
+            "OutlineColour=&H00000000,BorderStyle=1,Outline=2,Shadow=0,"
+            "Alignment=2,MarginV=40'"
+        )
+        cmd += ["-vf", vf, "-c:v", "libx264", "-preset", "fast", "-crf", "23"]
+    else:
+        print("  (skipping subtitle burn: SRT missing or empty)")
+        cmd += ["-c:v", "copy"]
+    cmd += ["-c:a", "aac", "-b:a", "128k", "-shortest", str(dst)]
+    run(cmd)
+
+
+def _fmt_srt_time(t: float) -> str:
+    h = int(t // 3600)
+    m = int((t % 3600) // 60)
+    s = int(t % 60)
+    ms = int(round((t - int(t)) * 1000))
+    if ms == 1000:
+        ms = 0
+        s += 1
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def make_srt(text: str, total_duration: float, words_per_cue: int = 6) -> str:
+    """Distribute the script text evenly across the audio duration as SRT cues."""
+    words = text.split()
+    if not words or total_duration <= 0:
+        return ""
+    cues: list[str] = []
+    bucket: list[str] = []
+    for w in words:
+        bucket.append(w)
+        if len(bucket) >= words_per_cue:
+            cues.append(" ".join(bucket))
+            bucket = []
+    if bucket:
+        cues.append(" ".join(bucket))
+    cue_dur = total_duration / len(cues)
+    lines: list[str] = []
+    for i, c in enumerate(cues):
+        start = i * cue_dur
+        end = min((i + 1) * cue_dur, total_duration)
+        lines += [
+            str(i + 1),
+            f"{_fmt_srt_time(start)} --> {_fmt_srt_time(end)}",
+            c,
+            "",
+        ]
+    return "\n".join(lines)
