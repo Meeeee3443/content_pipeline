@@ -10,7 +10,7 @@ through a GitHub Pages form triggers a GitHub Action that generates copy,
 images, a vertical reel, and a long-form video, then publishes them to a
 client-facing dashboard.
 
-Maintained by [Performedia](mailto:dev@performedia.com).
+Maintained by [@Meeeee3443](https://github.com/Meeeee3443).
 
 ## Live instance
 
@@ -156,7 +156,7 @@ public Microsoft endpoint; Ollama runs on the Action runner.
 - [ ] Password protection on per-client dashboards (Cloudflare Worker
   or similar gating layer)
 - [ ] Per-client logo / brand color via URL params
-- [ ] Custom domain (`pipeline.performedia.com`)
+- [ ] Custom domain
 - [ ] Strict WCAG AA on non-text UI (1.4.11) — bump card borders to ≥3:1
 
 ## Changelog
@@ -178,4 +178,4 @@ public Microsoft endpoint; Ollama runs on the Action runner.
 
 ## Maintainer
 
-Performedia · <dev@performedia.com>
+[@Meeeee3443](https://github.com/Meeeee3443)
