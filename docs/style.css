@@ -14,12 +14,12 @@
   --border-strong: #3a3540;
   --text: #ece8e0;
   --text-soft: #c4beb6;
-  --muted: #a39d94;
-  --muted-dim: #8d877f;
+  --muted: #b3ada4;
+  --muted-dim: #b3ada4;
   --accent: #e5a663;
   --accent-hi: #f4bd7c;
   --accent-soft: rgba(229, 166, 99, 0.12);
-  --err: #e88080;
+  --err: #f0a0a0;
   --err-soft: rgba(232, 128, 128, 0.08);
 
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
@@ -176,7 +176,7 @@ input[type=text], input:not([type]), select, textarea {
   font-size: 14px;
   transition: border-color .15s, background .15s;
 }
-input::placeholder, textarea::placeholder { color: var(--muted-dim); }
+input::placeholder, textarea::placeholder { color: var(--muted-dim); font-style: italic; }
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent);
