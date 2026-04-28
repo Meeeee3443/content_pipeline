@@ -69,25 +69,37 @@ jobs:
             --issue-number "$ISSUE_NUMBER"
 
       - name: Commit outputs
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add outputs/ docs/manifest.json
+          git add outputs/ docs/manifest.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Add outputs for issue #${{ github.event.issue.number }}"
-          git push
+          git push || true
 
-      - name: Comment on issue with result
-        if: always()
+      - name: Comment on issue (success)
+        if: success()
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ✅ Pipeline run complete.
+            Pipeline run complete.
 
             View your content on the dashboard:
             https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dashboard.html
 
-            Files were committed to `outputs/` in this repo.
+      - name: Comment on issue (failure)
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Pipeline run failed.
+
+            See the full log:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Any partial debug artifacts (e.g. `raw_response.txt`) were committed to `outputs/`.
 
       - name: Close issue
         if: success()

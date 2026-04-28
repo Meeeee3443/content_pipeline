@@ -1,8 +1,19 @@
+import json
 from pathlib import Path
-import re
 import ollama
 
 MODEL = "llama3.2:3b"
+
+SCHEMA = {
+    "type": "object",
+    "required": ["short_copy", "reel_script", "long_script", "image_prompt"],
+    "properties": {
+        "short_copy": {"type": "string"},
+        "reel_script": {"type": "string"},
+        "long_script": {"type": "string"},
+        "image_prompt": {"type": "string"},
+    },
+}
 
 PROMPT = """You are a social media content writer and video scriptwriter.
 
@@ -10,38 +21,25 @@ Topic: {topic}
 Keywords: {keywords}
 Notes: {notes}
 
-Generate ALL of the following in one response. Use the exact section markers shown.
+Return a JSON object with exactly these four string fields:
 
----SHORT_COPY---
-150-200 words. Hook in the first line.
-Platform-neutral. No hashtags.
+- short_copy: 150-200 words. Hook in the first line. Platform-neutral. No hashtags.
 
----REEL_SCRIPT---
-60 seconds spoken (~140 words).
-Conversational tone. Plain prose only — no stage directions, no [CUT] markers.
-This text will be read aloud verbatim by a TTS voice.
+- reel_script: ~140 words (about 60 seconds spoken). Conversational tone.
+  Plain prose only — no stage directions, no [CUT] markers, no chapter labels.
+  This text will be read aloud verbatim by a TTS voice.
 
----LONG_SCRIPT---
-About 3 minutes spoken (~450 words).
-Story arc: Hook -> Problem -> Deep Dive -> Examples -> CTA.
-Plain prose only — no stage directions, no chapter labels.
-This text will be read aloud verbatim by a TTS voice.
+- long_script: ~450 words (about 3 minutes spoken).
+  Story arc: hook, problem, deep dive, examples, call to action.
+  Plain prose only — no stage directions, no chapter labels.
+  This text will be read aloud verbatim by a TTS voice.
 
----IMAGE_PROMPT---
-One image generation prompt, max 60 words.
-Style: cinematic, photorealistic.
-Include: subject, mood, lighting, color palette, composition.
+- image_prompt: ONE image generation prompt, max 60 words.
+  Style: cinematic, photorealistic. Include subject, mood, lighting,
+  color palette, and composition.
+
+All four fields are required. Return JSON only — no commentary outside the JSON.
 """
-
-
-def _split_sections(text: str) -> dict:
-    parts = re.split(r"---([A-Z_]+)---", text)
-    out = {}
-    for i in range(1, len(parts) - 1, 2):
-        key = parts[i].strip()
-        body = parts[i + 1].strip()
-        out[key] = body
-    return out
 
 
 def run(topic: str, keywords: list[str], notes: str, out_dir: Path) -> dict:
@@ -52,27 +50,38 @@ def run(topic: str, keywords: list[str], notes: str, out_dir: Path) -> dict:
         keywords=", ".join(keywords),
         notes=notes or "(none)",
     )
-    resp = ollama.generate(model=MODEL, prompt=prompt, options={"temperature": 0.8})
-    text = resp.get("response", "")
-    sections = _split_sections(text)
+    resp = ollama.generate(
+        model=MODEL,
+        prompt=prompt,
+        format=SCHEMA,
+        options={"temperature": 0.7},
+    )
+    raw = resp.get("response", "")
+    (out_dir / "raw_response.txt").write_text(raw, encoding="utf-8")
 
-    required = ["SHORT_COPY", "REEL_SCRIPT", "LONG_SCRIPT", "IMAGE_PROMPT"]
-    missing = [k for k in required if k not in sections or not sections[k]]
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"Ollama returned non-JSON: {e}. See raw_response.txt")
+
+    missing = [k for k in ("short_copy", "reel_script", "long_script", "image_prompt")
+               if not data.get(k, "").strip()]
     if missing:
-        (out_dir / "raw_response.txt").write_text(text, encoding="utf-8")
-        raise RuntimeError(f"Ollama output missing sections: {missing}")
+        raise RuntimeError(f"Ollama JSON missing/empty fields: {missing}")
 
     files = {}
-    for key, body in sections.items():
-        fname = key.lower() + ".txt"
-        (out_dir / fname).write_text(body, encoding="utf-8")
-        files[key.lower()] = fname
+    for key, body in data.items():
+        if not isinstance(body, str):
+            continue
+        fname = f"{key}.txt"
+        (out_dir / fname).write_text(body.strip(), encoding="utf-8")
+        files[key] = fname
 
     print("  wrote: " + ", ".join(files.values()))
     return {
-        "short_copy": sections["SHORT_COPY"],
-        "reel_script": sections["REEL_SCRIPT"],
-        "long_script": sections["LONG_SCRIPT"],
-        "image_prompt": sections["IMAGE_PROMPT"],
+        "short_copy": data["short_copy"].strip(),
+        "reel_script": data["reel_script"].strip(),
+        "long_script": data["long_script"].strip(),
+        "image_prompt": data["image_prompt"].strip(),
         "files": files,
     }
