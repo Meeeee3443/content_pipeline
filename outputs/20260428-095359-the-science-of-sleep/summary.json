@@ -1,0 +1,38 @@
+{
+  "slug": "20260428-095359-the-science-of-sleep",
+  "issue_number": "2",
+  "client": "Test 2",
+  "topic": "the science of sleep",
+  "keywords": [
+    "sleep",
+    "brain",
+    "dream",
+    "night",
+    "bedroom"
+  ],
+  "voice": "en-US-ChristopherNeural",
+  "notes": "",
+  "requested": {
+    "short_copy": true,
+    "reel_script": true,
+    "long_script": true,
+    "images": true,
+    "reel_video": true,
+    "long_video": false
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt"
+    },
+    "images": {
+      "hero_16x9": "hero_16x9.png",
+      "hero_1x1": "hero_1x1.png"
+    }
+  },
+  "errors": [
+    "stage3: Command failed: ffmpeg -y -i tmp/20260428-095359-the-science-of-sleep/reel/silent.mp4..."
+  ]
+}
