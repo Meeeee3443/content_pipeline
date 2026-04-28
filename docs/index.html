@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Content Pipeline — New Request</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Content Pipeline</h1>
+    <p class="sub">Submit a topic. Get content delivered.</p>
+    <nav><a href="dashboard.html">View dashboard &rarr;</a></nav>
+  </header>
+
+  <form id="request-form">
+    <label>
+      <span>Client name *</span>
+      <input name="client" required placeholder="e.g. Acme Co">
+    </label>
+
+    <label>
+      <span>Topic *</span>
+      <input name="topic" required placeholder="e.g. how solar panels work">
+    </label>
+
+    <label>
+      <span>Keywords *</span>
+      <input name="keywords" required placeholder="comma-separated, e.g. solar, energy, rooftop">
+      <small>Used to search stock footage. Pick concrete, visual words.</small>
+    </label>
+
+    <fieldset>
+      <legend>Outputs needed</legend>
+      <label class="check"><input type="checkbox" name="outputs" value="Short copy" checked> Short copy (text)</label>
+      <label class="check"><input type="checkbox" name="outputs" value="Reel script" checked> Reel script (text)</label>
+      <label class="check"><input type="checkbox" name="outputs" value="Long script" checked> Long script (text)</label>
+      <label class="check"><input type="checkbox" name="outputs" value="Hero images" checked> Hero images (16:9 + 1:1)</label>
+      <label class="check"><input type="checkbox" name="outputs" value="Reel video" checked> Reel video (9:16, ~60s)</label>
+      <label class="check"><input type="checkbox" name="outputs" value="Long video"> Long video (16:9, ~3 min)</label>
+    </fieldset>
+
+    <label>
+      <span>Voiceover voice</span>
+      <select name="voice">
+        <option>en-US-ChristopherNeural (male, warm)</option>
+        <option>en-US-JennyNeural (female, friendly)</option>
+        <option>en-US-GuyNeural (male, news)</option>
+        <option>en-GB-RyanNeural (male, British)</option>
+        <option>en-IN-PrabhatNeural (male, Indian)</option>
+        <option>en-IN-NeerjaNeural (female, Indian)</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Notes</span>
+      <textarea name="notes" rows="3" placeholder="Tone, audience, must-mentions..."></textarea>
+    </label>
+
+    <button type="submit">Generate &rarr;</button>
+    <p class="hint">You'll be taken to GitHub to confirm and submit. Free GitHub account required.</p>
+  </form>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

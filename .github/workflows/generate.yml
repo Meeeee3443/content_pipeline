@@ -1,0 +1,96 @@
+name: Generate Content
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  generate:
+    if: contains(github.event.issue.labels.*.name, 'content-request')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Parse issue form
+        id: parse
+        uses: stefanbuck/github-issue-parser@v3
+        with:
+          template-path: .github/ISSUE_TEMPLATE/content-request.yml
+
+      - name: Show parsed payload
+        run: |
+          echo '${{ steps.parse.outputs.jsonString }}' | python3 -m json.tool
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg imagemagick fonts-dejavu
+
+      - name: Allow ImageMagick to read text
+        run: |
+          sudo sed -i 's/rights="none" pattern="@\*"/rights="read|write" pattern="@*"/' /etc/ImageMagick-6/policy.xml || true
+          sudo sed -i 's/<policy domain="path" rights="none" pattern="@\*"\/>/<policy domain="path" rights="read|write" pattern="@*"\/>/' /etc/ImageMagick-6/policy.xml || true
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve > /tmp/ollama.log 2>&1 &
+          sleep 5
+
+      - name: Pull Ollama model
+        run: ollama pull llama3.2:3b
+
+      - name: Run pipeline
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+        run: |
+          python -m pipeline.pipeline \
+            --payload-env ISSUE_PAYLOAD \
+            --issue-number "$ISSUE_NUMBER"
+
+      - name: Commit outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/ docs/manifest.json
+          git diff --cached --quiet || git commit -m "Add outputs for issue #${{ github.event.issue.number }}"
+          git push
+
+      - name: Comment on issue with result
+        if: always()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ✅ Pipeline run complete.
+
+            View your content on the dashboard:
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dashboard.html
+
+            Files were committed to `outputs/` in this repo.
+
+      - name: Close issue
+        if: success()
+        uses: peter-evans/close-issue@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}

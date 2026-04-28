@@ -1,0 +1,74 @@
+name: Content Request
+description: Submit a topic to generate content for
+title: "[Content] "
+labels: ["content-request"]
+body:
+  - type: input
+    id: client
+    attributes:
+      label: Client name
+      description: Who is this for?
+      placeholder: e.g. Acme Co
+    validations:
+      required: true
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: The main subject of the content
+      placeholder: e.g. how solar panels work
+    validations:
+      required: true
+
+  - type: input
+    id: keywords
+    attributes:
+      label: Keywords
+      description: Comma-separated keywords (used for stock footage search)
+      placeholder: e.g. solar, energy, sustainability, rooftop
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: outputs
+    attributes:
+      label: Outputs needed
+      description: Which deliverables do you want?
+      options:
+        - label: Short copy (text)
+          required: false
+        - label: Reel script (text)
+          required: false
+        - label: Long script (text)
+          required: false
+        - label: Hero images (16:9 + 1:1)
+          required: false
+        - label: Reel video (9:16, ~60s)
+          required: false
+        - label: Long video (16:9, ~3 min)
+          required: false
+
+  - type: dropdown
+    id: voice
+    attributes:
+      label: Voiceover voice
+      options:
+        - en-US-ChristopherNeural (male, warm)
+        - en-US-JennyNeural (female, friendly)
+        - en-US-GuyNeural (male, news)
+        - en-GB-RyanNeural (male, British)
+        - en-IN-PrabhatNeural (male, Indian)
+        - en-IN-NeerjaNeural (female, Indian)
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything else the pipeline should know? Tone, audience, must-mentions.
+      placeholder: e.g. casual tone, target homeowners, mention government rebates
+    validations:
+      required: false
