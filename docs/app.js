@@ -6,6 +6,7 @@ const REPO  = "content_pipeline";
 
 const TEMPLATE = "content-request.yml";
 
+// ----- Form (index.html) -----
 function buildIssueUrl(form) {
   const data = new FormData(form);
   const outputs = data.getAll("outputs").join(", ");
@@ -32,70 +33,208 @@ function initForm() {
   });
 }
 
+// ----- Shared helpers -----
 function fmtDate(iso) {
   if (!iso) return "";
-  const d = new Date(iso);
-  return d.toLocaleString();
+  return new Date(iso).toLocaleString();
 }
-
-function fileLink(slug, filename) {
-  const url = `../outputs/${slug}/${encodeURIComponent(filename)}`;
-  return `<a href="${url}" target="_blank">${filename}</a>`;
-}
-
-function renderEntry(e) {
-  const a = e.artifacts || {};
-  const links = [];
-  if (a.text) Object.values(a.text).forEach(f => links.push(fileLink(e.slug, f)));
-  if (a.images) Object.values(a.images).forEach(f => links.push(fileLink(e.slug, f)));
-  if (a.reel) Object.values(a.reel).forEach(f => links.push(fileLink(e.slug, f)));
-  if (a.long) Object.values(a.long).forEach(f => links.push(fileLink(e.slug, f)));
-
-  const errs = (e.errors || []).length
-    ? `<div class="errors">${e.errors.length} error(s): ${e.errors.join(" | ")}</div>` : "";
-
-  return `
-    <article class="entry">
-      <div class="entry-head">
-        <h2>${escapeHtml(e.topic || "(untitled)")}</h2>
-        <time>${fmtDate(e.created_at)}</time>
-      </div>
-      <div class="entry-meta">
-        ${escapeHtml(e.client || "—")} · keywords: ${(e.keywords || []).map(escapeHtml).join(", ")}
-        ${e.issue_number ? ` · <a href="https://github.com/${OWNER}/${REPO}/issues/${e.issue_number}" target="_blank">#${e.issue_number}</a>` : ""}
-      </div>
-      <div class="entry-files">
-        ${links.length ? links.join("") : '<span style="color:var(--muted);font-size:13px;">No files</span>'}
-      </div>
-      ${errs}
-    </article>
-  `;
-}
-
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
   }[c]));
 }
+function fileUrl(slug, filename) {
+  return `../outputs/${slug}/${encodeURIComponent(filename)}`;
+}
+async function loadManifest() {
+  const r = await fetch(`manifest.json?t=${Date.now()}`);
+  if (!r.ok) throw new Error("manifest.json not found");
+  return r.json();
+}
 
+// ----- Dashboard (dashboard.html) -----
+function renderCard(e) {
+  const a = e.artifacts || {};
+  const thumb = a.images && a.images.hero_1x1
+    ? `<img class="thumb" src="${fileUrl(e.slug, a.images.hero_1x1)}" alt="">`
+    : `<div class="thumb thumb-empty">no image</div>`;
+
+  const tags = [];
+  if (a.text) tags.push(`text`);
+  if (a.images) tags.push(`images`);
+  if (a.reel) tags.push(`reel`);
+  if (a.long) tags.push(`long video`);
+
+  const errBadge = (e.errors || []).length
+    ? `<span class="badge badge-err">${e.errors.length} error</span>` : "";
+
+  return `
+    <a class="card" href="view.html?slug=${encodeURIComponent(e.slug)}">
+      ${thumb}
+      <div class="card-body">
+        <div class="card-head">
+          <h2>${escapeHtml(e.topic || "(untitled)")}</h2>
+          ${errBadge}
+        </div>
+        <div class="card-meta">
+          ${escapeHtml(e.client || "—")} · ${fmtDate(e.created_at)}
+        </div>
+        <div class="card-tags">
+          ${tags.map(t => `<span class="tag">${t}</span>`).join("")}
+        </div>
+      </div>
+    </a>
+  `;
+}
 async function initDashboard() {
   const root = document.getElementById("entries");
   if (!root) return;
   try {
-    const r = await fetch(`manifest.json?t=${Date.now()}`);
-    if (!r.ok) throw new Error("manifest.json not found");
-    const data = await r.json();
+    const data = await loadManifest();
     if (!data.entries || !data.entries.length) {
       root.innerHTML = '<p class="empty">No content yet. Submit a request to get started.</p>';
       return;
     }
-    root.innerHTML = data.entries.map(renderEntry).join("");
+    root.innerHTML = `<div class="grid">${data.entries.map(renderCard).join("")}</div>`;
   } catch (err) {
-    root.innerHTML = `<p class="empty">Could not load manifest: ${escapeHtml(err.message)}</p>`;
+    root.innerHTML = `<p class="empty">Could not load: ${escapeHtml(err.message)}</p>`;
   }
 }
 
+// ----- Detail (view.html) -----
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = orig; }, 1200);
+  });
+}
+async function loadText(slug, file) {
+  try {
+    const r = await fetch(fileUrl(slug, file));
+    return r.ok ? await r.text() : "";
+  } catch { return ""; }
+}
+function section(title, body) {
+  return `<section class="vsec"><h2>${escapeHtml(title)}</h2>${body}</section>`;
+}
+function videoBlock(slug, file, label) {
+  const url = fileUrl(slug, file);
+  return `
+    <div class="vplayer">
+      <video controls preload="metadata" src="${url}"></video>
+      <div class="vplayer-foot">
+        <span>${escapeHtml(label)}</span>
+        <a class="btn" href="${url}" download>Download</a>
+      </div>
+    </div>
+  `;
+}
+function imageBlock(slug, files) {
+  return `<div class="vimages">${
+    Object.entries(files).map(([key, f]) => `
+      <figure>
+        <img src="${fileUrl(slug, f)}" alt="${escapeHtml(key)}">
+        <figcaption>
+          <span>${escapeHtml(key)}</span>
+          <a class="btn btn-sm" href="${fileUrl(slug, f)}" download>Download</a>
+        </figcaption>
+      </figure>
+    `).join("")
+  }</div>`;
+}
+function textBlock(slug, label, file, content) {
+  const safe = escapeHtml(content || "(empty)");
+  const id = `txt-${file}`;
+  return `
+    <div class="vtext">
+      <div class="vtext-head">
+        <span>${escapeHtml(label)}</span>
+        <span class="vtext-actions">
+          <button class="btn btn-sm" data-copy="${id}">Copy</button>
+          <a class="btn btn-sm" href="${fileUrl(slug, file)}" download>Download</a>
+        </span>
+      </div>
+      <pre id="${id}">${safe}</pre>
+    </div>
+  `;
+}
+
+async function initView() {
+  const root = document.getElementById("view");
+  if (!root) return;
+  const params = new URLSearchParams(location.search);
+  const slug = params.get("slug");
+  if (!slug) {
+    root.innerHTML = `<p class="empty">Missing slug.</p>`;
+    return;
+  }
+  let data;
+  try { data = await loadManifest(); }
+  catch (err) {
+    root.innerHTML = `<p class="empty">Could not load: ${escapeHtml(err.message)}</p>`;
+    return;
+  }
+  const e = (data.entries || []).find(x => x.slug === slug);
+  if (!e) {
+    root.innerHTML = `<p class="empty">Entry not found: ${escapeHtml(slug)}</p>`;
+    return;
+  }
+
+  document.getElementById("v-topic").textContent = e.topic || "(untitled)";
+  document.getElementById("v-meta").innerHTML = `
+    ${escapeHtml(e.client || "—")} · ${fmtDate(e.created_at)}
+    · keywords: ${(e.keywords || []).map(escapeHtml).join(", ")}
+    ${e.issue_number ? ` · <a href="https://github.com/${OWNER}/${REPO}/issues/${e.issue_number}" target="_blank">#${e.issue_number}</a>` : ""}
+  `;
+
+  const a = e.artifacts || {};
+  const parts = [];
+
+  if (a.reel && a.reel.reel_9x16) {
+    parts.push(section("Reel (9:16)", videoBlock(e.slug, a.reel.reel_9x16, "reel_9x16.mp4")));
+  }
+  if (a.long && a.long.long_16x9) {
+    parts.push(section("Long video (16:9)", videoBlock(e.slug, a.long.long_16x9, "long_16x9.mp4")));
+  }
+  if (a.images && Object.keys(a.images).length) {
+    parts.push(section("Hero images", imageBlock(e.slug, a.images)));
+  }
+  if (a.text && Object.keys(a.text).length) {
+    const labels = {
+      short_copy: "Short copy",
+      reel_script: "Reel script",
+      long_script: "Long script",
+      image_prompt: "Image prompt",
+    };
+    const blocks = await Promise.all(
+      Object.entries(a.text).map(async ([key, f]) => {
+        const content = await loadText(e.slug, f);
+        return textBlock(e.slug, labels[key] || key, f, content);
+      })
+    );
+    parts.push(section("Text", blocks.join("")));
+  }
+  if ((e.errors || []).length) {
+    parts.push(section("Errors", `<pre class="errblock">${escapeHtml(e.errors.join("\n"))}</pre>`));
+  }
+  if (!parts.length) {
+    parts.push(`<p class="empty">No artifacts in this entry.</p>`);
+  }
+
+  root.innerHTML = parts.join("");
+
+  root.querySelectorAll("[data-copy]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.getAttribute("data-copy"));
+      if (target) copyToClipboard(target.textContent, btn);
+    });
+  });
+}
+
+// ----- Boot -----
 document.addEventListener("DOMContentLoaded", () => {
   initForm();
   initDashboard();
+  initView();
 });
