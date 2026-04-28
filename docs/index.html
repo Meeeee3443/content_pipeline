@@ -3,64 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Content Pipeline — New Request</title>
+<title>Content Pipeline — New request</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Content Pipeline</h1>
-    <p class="sub">Submit a topic. Get content delivered.</p>
-    <nav><a href="dashboard.html">View dashboard &rarr;</a></nav>
+  <header class="page-head">
+    <div class="brand-row">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect x="5" y="11" width="14" height="2.5" rx="1.25" fill="currentColor" opacity="0.7"/>
+          <rect x="8" y="17" width="8" height="2.5" rx="1.25" fill="currentColor" opacity="0.4"/>
+        </svg>
+        Content Pipeline
+      </div>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+    <h1>New <em>request</em></h1>
+    <p class="sub">Topic in. Finished content out, in about ten minutes.</p>
   </header>
 
-  <form id="request-form">
-    <label>
-      <span>Client name *</span>
-      <input name="client" required placeholder="e.g. Acme Co">
-    </label>
+  <main>
+    <form id="request-form">
+      <label>
+        <span>Client</span>
+        <input name="client" required placeholder="Acme Co">
+      </label>
 
-    <label>
-      <span>Topic *</span>
-      <input name="topic" required placeholder="e.g. how solar panels work">
-    </label>
+      <label>
+        <span>Topic</span>
+        <input name="topic" required placeholder="how solar panels work">
+      </label>
 
-    <label>
-      <span>Keywords *</span>
-      <input name="keywords" required placeholder="comma-separated, e.g. solar, energy, rooftop">
-      <small>Used to search stock footage. Pick concrete, visual words.</small>
-    </label>
+      <label>
+        <span>Keywords</span>
+        <input name="keywords" required placeholder="solar, energy, rooftop">
+        <small>Comma-separated. Used to search stock footage. Pick concrete, visual words.</small>
+      </label>
 
-    <fieldset>
-      <legend>Outputs needed</legend>
-      <label class="check"><input type="checkbox" name="outputs" value="Short copy" checked> Short copy (text)</label>
-      <label class="check"><input type="checkbox" name="outputs" value="Reel script" checked> Reel script (text)</label>
-      <label class="check"><input type="checkbox" name="outputs" value="Long script" checked> Long script (text)</label>
-      <label class="check"><input type="checkbox" name="outputs" value="Hero images" checked> Hero images (16:9 + 1:1)</label>
-      <label class="check"><input type="checkbox" name="outputs" value="Reel video" checked> Reel video (9:16, ~60s)</label>
-      <label class="check"><input type="checkbox" name="outputs" value="Long video"> Long video (16:9, ~3 min)</label>
-    </fieldset>
+      <fieldset>
+        <legend>Outputs</legend>
+        <label class="check"><input type="checkbox" name="outputs" value="Short copy" checked><span>Short copy <em style="color:var(--muted)">(text)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Reel script" checked><span>Reel script <em style="color:var(--muted)">(text)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Long script" checked><span>Long script <em style="color:var(--muted)">(text)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Hero images" checked><span>Hero images <em style="color:var(--muted)">(16:9 + 1:1)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Reel video" checked><span>Reel video <em style="color:var(--muted)">(9:16, ~60s)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Long video"><span>Long video <em style="color:var(--muted)">(16:9, ~3 min)</em></span></label>
+      </fieldset>
 
-    <label>
-      <span>Voiceover voice</span>
-      <select name="voice">
-        <option>en-US-ChristopherNeural (male, warm)</option>
-        <option>en-US-JennyNeural (female, friendly)</option>
-        <option>en-US-GuyNeural (male, news)</option>
-        <option>en-GB-RyanNeural (male, British)</option>
-        <option>en-IN-PrabhatNeural (male, Indian)</option>
-        <option>en-IN-NeerjaNeural (female, Indian)</option>
-      </select>
-    </label>
+      <label>
+        <span>Voice</span>
+        <select name="voice">
+          <option>en-US-ChristopherNeural (male, warm)</option>
+          <option>en-US-JennyNeural (female, friendly)</option>
+          <option>en-US-GuyNeural (male, news)</option>
+          <option>en-GB-RyanNeural (male, British)</option>
+          <option>en-IN-PrabhatNeural (male, Indian)</option>
+          <option>en-IN-NeerjaNeural (female, Indian)</option>
+        </select>
+      </label>
 
-    <label>
-      <span>Notes</span>
-      <textarea name="notes" rows="3" placeholder="Tone, audience, must-mentions..."></textarea>
-    </label>
+      <label>
+        <span>Notes</span>
+        <textarea name="notes" rows="3" placeholder="Tone, audience, must-mentions..."></textarea>
+      </label>
 
-    <button type="button" id="generate-btn">Generate &rarr;</button>
-    <p class="hint">You'll be taken to GitHub to confirm and submit. Free GitHub account required.</p>
-  </form>
+      <button type="button" id="generate-btn">Generate &rarr;</button>
+      <p class="hint">You'll be taken to GitHub to confirm and submit.</p>
+    </form>
+  </main>
 </div>
 <script src="app.js"></script>
 </body>

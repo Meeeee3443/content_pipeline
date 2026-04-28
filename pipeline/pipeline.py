@@ -120,7 +120,7 @@ def main():
         cfg["keywords"] = [cfg["topic"]]
 
     slug = make_slug(cfg["topic"])
-    out_dir = Path("outputs") / slug
+    out_dir = Path("docs/outputs") / slug
     work_dir = Path("tmp") / slug
     out_dir.mkdir(parents=True, exist_ok=True)
     work_dir.mkdir(parents=True, exist_ok=True)

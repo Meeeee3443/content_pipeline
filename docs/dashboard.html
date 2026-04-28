@@ -8,15 +8,28 @@
 </head>
 <body>
 <div class="wrap wide">
-  <header>
-    <h1>Dashboard</h1>
-    <p class="sub">All generated content, newest first.</p>
-    <nav><a href="index.html">+ New request</a></nav>
+  <header class="page-head">
+    <div class="brand-row">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect x="5" y="11" width="14" height="2.5" rx="1.25" fill="currentColor" opacity="0.7"/>
+          <rect x="8" y="17" width="8" height="2.5" rx="1.25" fill="currentColor" opacity="0.4"/>
+        </svg>
+        Content Pipeline
+      </div>
+      <nav>
+        <a href="index.html">+ New request</a>
+      </nav>
+    </div>
+    <h1 id="dash-title"><em>Dashboard</em></h1>
+    <p class="sub" id="dash-sub">All generated content, newest first.</p>
+    <div id="filter-pill"></div>
   </header>
   <main id="entries">
-    <p class="empty">Loading...</p>
+    <p class="empty">Loading…</p>
   </main>
 </div>
-<script src="app.js" data-mode="dashboard"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -8,13 +8,25 @@
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <nav><a href="dashboard.html">&larr; Back to dashboard</a></nav>
+  <header class="page-head">
+    <div class="brand-row">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect x="5" y="11" width="14" height="2.5" rx="1.25" fill="currentColor" opacity="0.7"/>
+          <rect x="8" y="17" width="8" height="2.5" rx="1.25" fill="currentColor" opacity="0.4"/>
+        </svg>
+        Content Pipeline
+      </div>
+      <nav>
+        <a href="dashboard.html">&larr; Dashboard</a>
+      </nav>
+    </div>
     <h1 id="v-topic">Loading…</h1>
     <p class="sub" id="v-meta"></p>
   </header>
   <main id="view"></main>
 </div>
-<script src="app.js" data-mode="view"></script>
+<script src="app.js"></script>
 </body>
 </html>
