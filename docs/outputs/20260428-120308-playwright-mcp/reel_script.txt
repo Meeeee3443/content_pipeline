@@ -1,0 +1,1 @@
+Imagine being able to automate complex browser interactions, test your web apps in parallel, and get instant feedback on performance issues. That's exactly what Playwright MCP offers. With its high-level API and support for multiple browsers, you can streamline your development workflow and focus on what matters most - building amazing user experiences.

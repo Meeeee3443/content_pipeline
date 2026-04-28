@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "slug": "20260428-120308-playwright-mcp",
+      "issue_number": "3",
+      "client": "Playwright Test 003",
+      "topic": "Playwright MCP",
+      "keywords": [
+        "Playwright MCP"
+      ],
+      "voice": "en-US-JennyNeural",
+      "notes": "",
+      "requested": {
+        "short_copy": true,
+        "reel_script": true,
+        "long_script": true,
+        "images": true,
+        "reel_video": true,
+        "long_video": true
+      },
+      "artifacts": {
+        "text": {
+          "short_copy": "short_copy.txt",
+          "reel_script": "reel_script.txt",
+          "long_script": "long_script.txt",
+          "image_prompt": "image_prompt.txt"
+        },
+        "images": {
+          "hero_16x9": "hero_16x9.png",
+          "hero_1x1": "hero_1x1.png"
+        },
+        "reel": {
+          "reel_9x16": "reel_9x16.mp4"
+        },
+        "long": {
+          "long_16x9": "long_16x9.mp4"
+        }
+      },
+      "errors": [],
+      "created_at": "2026-04-28T12:06:55.227493Z"
+    },
+    {
       "slug": "20260428-102832-the-science-of-sleep",
       "issue_number": "2",
       "client": "Test 2",

@@ -1,0 +1,1 @@
+Unlock your web app's full potential with Playwright MCP! Discover a powerful tool for automating browser interactions and making your development process more efficient. Say goodbye to tedious testing and hello to faster iteration times.
