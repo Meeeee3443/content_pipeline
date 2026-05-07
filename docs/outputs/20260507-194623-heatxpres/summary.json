@@ -1,0 +1,49 @@
+{
+  "slug": "20260507-194623-heatxpres",
+  "issue_number": "6",
+  "client": "Novota",
+  "topic": "heatxpres",
+  "keywords": [
+    "About HeatXperse HeatXperse is an innovative",
+    "patented thermal coating created using advanced thermal dissipation technology in collaboration with a leading Wire & Cable Company in the USA. Its exceptional capacity to enhance the overall efficiency of power transmission by reducing transmission loss distinguishes it within the coatings market.  This innovative coating aims to significantly reduce the temperature of overhead conductors through advanced heat dissipation technology. Additionally",
+    "it can also be applied to existing conductors for enhanced performance. This principle can be extended to various applications",
+    "including cooling chambers",
+    "radiators",
+    "tire rims",
+    "transformers",
+    "heating rods",
+    "and any application where efficient heat management is crucial."
+  ],
+  "source_url": "https://novota.in/heatxperse/",
+  "voice": "en-US-ChristopherNeural",
+  "notes": "About HeatXperse HeatXperse is an innovative, patented thermal coating created using advanced thermal dissipation technology in collaboration with a leading Wire & Cable Company in the USA. Its exceptional capacity to enhance the overall efficiency of power transmission by reducing transmission loss distinguishes it within the coatings market.  This innovative coating aims to significantly reduce the temperature of overhead conductors through advanced heat dissipation technology. Additionally, it can also be applied to existing conductors for enhanced performance. This principle can be extended to various applications, including cooling chambers, radiators, tire rims, transformers, heating rods, and any application where efficient heat management is crucial.",
+  "requested": {
+    "short_copy": true,
+    "reel_script": true,
+    "long_script": true,
+    "images": true,
+    "reel_video": true,
+    "long_video": true
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt",
+      "source_article": "source_article.txt",
+      "prompt_used": "prompt_used.txt"
+    },
+    "images": {
+      "hero_16x9": "hero_16x9.png",
+      "hero_1x1": "hero_1x1.png"
+    },
+    "reel": {
+      "reel_9x16": "reel_9x16.mp4"
+    },
+    "long": {
+      "long_16x9": "long_16x9.mp4"
+    }
+  },
+  "errors": []
+}
