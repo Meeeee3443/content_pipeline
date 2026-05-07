@@ -1,0 +1,37 @@
+{
+  "slug": "20260507-175329-emiseal",
+  "issue_number": "5",
+  "client": "NOVOTA",
+  "topic": "emiSEAL",
+  "keywords": [
+    "emiSEAL is a high emissivity ceramic coating designed for high-temperature industrial furnaces. Instead of allowing refractory walls to absorb heat",
+    "the coating reflects and radiates heat back into the furnace chamber.  This solution works as an energy-saving refractory coating by improving radiant heat transfer efficiency."
+  ],
+  "source_url": "",
+  "voice": "en-US-JennyNeural",
+  "notes": "",
+  "requested": {
+    "short_copy": false,
+    "reel_script": false,
+    "long_script": false,
+    "images": false,
+    "reel_video": true,
+    "long_video": true
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt",
+      "prompt_used": "prompt_used.txt"
+    },
+    "reel": {
+      "reel_9x16": "reel_9x16.mp4"
+    },
+    "long": {
+      "long_16x9": "long_16x9.mp4"
+    }
+  },
+  "errors": []
+}

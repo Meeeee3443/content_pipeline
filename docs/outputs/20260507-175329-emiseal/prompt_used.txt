@@ -1,0 +1,40 @@
+You are a social media content writer and video scriptwriter.
+
+Topic: emiSEAL
+Keywords: emiSEAL is a high emissivity ceramic coating designed for high-temperature industrial furnaces. Instead of allowing refractory walls to absorb heat, the coating reflects and radiates heat back into the furnace chamber.  This solution works as an energy-saving refractory coating by improving radiant heat transfer efficiency.
+Client brief / rough prompt: (none)
+
+Write content based on the brief above. If a source article is provided,
+extract the key facts and ideas from it; do not invent details not supported
+by the inputs.
+
+Return a JSON object with these exact fields.
+
+short_copy:
+  150-200 words. Hook in the first line. Platform-neutral. No hashtags.
+
+reel_script:
+  ~140 words (about 60 seconds spoken). Conversational tone.
+  Plain prose only. No stage directions. Read aloud by a TTS voice.
+
+long_chapters:
+  An array of EXACTLY 8 chapters. Together they form a 6-8 minute
+  spoken script. Each chapter must be 120-180 words of plain narration.
+  Each chapter is a complete paragraph with multiple sentences.
+  The 8 chapters together tell a coherent story arc:
+    1. Hook - grab attention, name the topic, hint at why it matters
+    2. The big idea - what this thing actually is, in plain language
+    3. Background - history, context, how we got here
+    4. The mechanism - how it works, the underlying details
+    5. Real example #1 - a concrete case that illustrates the point
+    6. Real example #2 - a different angle or surprising application
+    7. Implications - what this means going forward, who it affects
+    8. Takeaway - the one thing to remember, plus a call to action
+  No chapter titles, no numbers, no markdown, no [stage directions].
+  Each chapter is plain prose that flows naturally when read aloud.
+
+image_prompt:
+  ONE image generation prompt, max 60 words. Style: cinematic, photorealistic.
+  Subject, mood, lighting, color palette, composition.
+
+All fields are required. Return JSON only.
