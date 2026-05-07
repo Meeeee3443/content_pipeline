@@ -2,7 +2,7 @@
 
 > Topic in. Finished content out, in about ten minutes.
 
-**Version:** 0.1.0 · **Status:** working build, in active development
+**Version:** 0.2.0 · **Status:** working build, in active development
 
 An open-source content-generation pipeline that runs entirely on GitHub
 infrastructure — no servers, no Docker, no paid APIs. A topic submitted
@@ -160,6 +160,20 @@ public Microsoft endpoint; Ollama runs on the Action runner.
 - [ ] Strict WCAG AA on non-text UI (1.4.11) — bump card borders to ≥3:1
 
 ## Changelog
+
+### 0.2.0 — source URL + richer brief
+
+- New optional `Source URL` field on the form and issue template.
+  When provided, the page is fetched (via `trafilatura`) and the
+  extracted article text is included in the model prompt as the primary
+  factual basis for the scripts.
+- `Notes` field repurposed as a free-form **Brief / rough prompt** —
+  any tone, audience, must-mentions, or rough prompt copy gets folded
+  into the brief alongside topic, keywords, and source article.
+- Each run now saves `prompt_used.txt` and (when applicable)
+  `source_article.txt` as artifacts so you can audit exactly what
+  context the model received.
+- Detail page surfaces the source URL when present.
 
 ### 0.1.0 — first working build
 

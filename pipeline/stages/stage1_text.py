@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 import ollama
 
+from ..utils.web_fetch import fetch_article
+
 MODEL = "llama3.2:3b"
 
 SCHEMA = {
@@ -20,11 +22,15 @@ SCHEMA = {
     },
 }
 
-PROMPT = """You are a social media content writer and video scriptwriter.
+PROMPT_HEAD = """You are a social media content writer and video scriptwriter.
 
 Topic: {topic}
 Keywords: {keywords}
-Notes: {notes}
+Client brief / rough prompt: {notes}
+{article_block}
+Write content based on the brief above. If a source article is provided,
+extract the key facts and ideas from it; do not invent details not supported
+by the inputs.
 
 Return a JSON object with these exact fields.
 
@@ -36,7 +42,7 @@ reel_script:
   Plain prose only. No stage directions. Read aloud by a TTS voice.
 
 long_chapters:
-  An array of EXACTLY 8 chapters. Together they must form a 6-8 minute
+  An array of EXACTLY 8 chapters. Together they form a 6-8 minute
   spoken script. Each chapter must be 120-180 words of plain narration.
   Each chapter is a complete paragraph with multiple sentences.
   The 8 chapters together tell a coherent story arc:
@@ -59,14 +65,41 @@ All fields are required. Return JSON only.
 """
 
 
-def run(topic: str, keywords: list[str], notes: str, out_dir: Path) -> dict:
+def _build_prompt(topic: str, keywords: list[str], notes: str, article_text: str) -> str:
+    if article_text:
+        article_block = (
+            "\nSource article (use this as your primary factual basis):\n"
+            "---\n"
+            f"{article_text}\n"
+            "---\n"
+        )
+    else:
+        article_block = ""
+    return PROMPT_HEAD.format(
+        topic=topic,
+        keywords=", ".join(keywords) if keywords else "(none)",
+        notes=notes or "(none)",
+        article_block=article_block,
+    )
+
+
+def run(topic: str, keywords: list[str], notes: str, source_url: str, out_dir: Path) -> dict:
     print(f"[stage1] generating text via Ollama ({MODEL})")
     out_dir.mkdir(parents=True, exist_ok=True)
-    prompt = PROMPT.format(
-        topic=topic,
-        keywords=", ".join(keywords),
-        notes=notes or "(none)",
-    )
+
+    article_text = ""
+    if source_url:
+        print(f"  fetching source URL: {source_url}")
+        article_text, fetch_err = fetch_article(source_url)
+        if fetch_err:
+            print(f"  WARN: {fetch_err} (continuing without article)")
+        else:
+            print(f"  article extracted: {len(article_text)} chars, {len(article_text.split())} words")
+            (out_dir / "source_article.txt").write_text(article_text, encoding="utf-8")
+
+    prompt = _build_prompt(topic, keywords, notes, article_text)
+    (out_dir / "prompt_used.txt").write_text(prompt, encoding="utf-8")
+
     resp = ollama.generate(
         model=MODEL,
         prompt=prompt,
@@ -97,6 +130,10 @@ def run(topic: str, keywords: list[str], notes: str, out_dir: Path) -> dict:
         "long_script": "long_script.txt",
         "image_prompt": "image_prompt.txt",
     }
+    if article_text:
+        files["source_article"] = "source_article.txt"
+    files["prompt_used"] = "prompt_used.txt"
+
     (out_dir / "short_copy.txt").write_text(data["short_copy"].strip(), encoding="utf-8")
     (out_dir / "reel_script.txt").write_text(data["reel_script"].strip(), encoding="utf-8")
     (out_dir / "long_script.txt").write_text(long_script, encoding="utf-8")

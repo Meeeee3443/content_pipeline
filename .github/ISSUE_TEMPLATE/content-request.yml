@@ -30,6 +30,15 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: source_url
+    attributes:
+      label: Source URL
+      description: Optional. If provided, the page is fetched and its main article text is used as source material for the scripts.
+      placeholder: https://example.com/article
+    validations:
+      required: false
+
   - type: checkboxes
     id: outputs
     attributes:

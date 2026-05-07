@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Content Pipeline — New request</title>
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <div class="wrap">
@@ -44,6 +44,12 @@
         <small>Comma-separated. Used to search stock footage. Pick concrete, visual words.</small>
       </label>
 
+      <label>
+        <span>Source URL</span>
+        <input name="source_url" type="url" placeholder="https://example.com/article">
+        <small>Optional. If provided, we fetch this page and base the scripts on its content.</small>
+      </label>
+
       <fieldset>
         <legend>Outputs</legend>
         <label class="check"><input type="checkbox" name="outputs" value="Short copy" checked><span>Short copy <em style="color:var(--muted)">(text)</em></span></label>
@@ -67,8 +73,9 @@
       </label>
 
       <label>
-        <span>Notes</span>
-        <textarea name="notes" rows="3" placeholder="Tone, audience, must-mentions..."></textarea>
+        <span>Brief / rough prompt</span>
+        <textarea name="notes" rows="4" placeholder="Tone, audience, must-mentions, or a rough prompt — anything written here is folded into the brief and used to guide the script."></textarea>
+        <small>Free-form. The model uses this as part of the brief, alongside the topic, keywords, and any source article.</small>
       </label>
 
       <button type="button" id="generate-btn">Generate &rarr;</button>
@@ -76,6 +83,6 @@
     </form>
   </main>
 </div>
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

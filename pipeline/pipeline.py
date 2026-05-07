@@ -64,6 +64,7 @@ def _parse_payload(payload: dict) -> dict:
         "client": str(get("client")).strip(),
         "topic": str(get("topic")).strip(),
         "keywords": [k.strip() for k in str(get("keywords")).split(",") if k.strip()],
+        "source_url": str(get("source_url")).strip(),
         "voice": _normalize_voice(str(get("voice")).strip()),
         "notes": str(get("notes")).strip(),
         "outputs": _outputs_from_checkboxes(checked),
@@ -76,6 +77,7 @@ def _from_cli(args) -> dict:
         "client": args.client or "local",
         "topic": args.topic,
         "keywords": [k.strip() for k in (args.keywords or "").split(",") if k.strip()],
+        "source_url": args.source_url or "",
         "voice": _normalize_voice(args.voice),
         "notes": args.notes or "",
         "outputs": {
@@ -96,6 +98,7 @@ def main():
     ap.add_argument("--topic")
     ap.add_argument("--keywords", default="")
     ap.add_argument("--client", default="")
+    ap.add_argument("--source-url", default="")
     ap.add_argument("--voice", default="en-US-ChristopherNeural")
     ap.add_argument("--notes", default="")
     ap.add_argument("--outputs", default="all", help="comma list: short_copy,reel_script,long_script,images,reel,long,all")
@@ -126,12 +129,13 @@ def main():
     work_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 60)
-    print(f"Topic:    {cfg['topic']}")
-    print(f"Client:   {cfg['client']}")
-    print(f"Keywords: {cfg['keywords']}")
-    print(f"Voice:    {cfg['voice']}")
-    print(f"Outputs:  {[k for k,v in cfg['outputs'].items() if v]}")
-    print(f"Slug:     {slug}")
+    print(f"Topic:      {cfg['topic']}")
+    print(f"Client:     {cfg['client']}")
+    print(f"Keywords:   {cfg['keywords']}")
+    print(f"Source URL: {cfg.get('source_url') or '(none)'}")
+    print(f"Voice:      {cfg['voice']}")
+    print(f"Outputs:    {[k for k,v in cfg['outputs'].items() if v]}")
+    print(f"Slug:       {slug}")
     print("=" * 60)
 
     artifacts: dict = {}
@@ -143,7 +147,11 @@ def main():
     text = None
     if needs_text:
         try:
-            text = stage1_text.run(cfg["topic"], cfg["keywords"], cfg["notes"], out_dir)
+            text = stage1_text.run(
+                cfg["topic"], cfg["keywords"], cfg["notes"],
+                cfg.get("source_url", ""),
+                out_dir,
+            )
             artifacts["text"] = text["files"]
         except Exception as e:
             errors.append(f"stage1: {e}")
@@ -182,6 +190,7 @@ def main():
         "client": cfg["client"],
         "topic": cfg["topic"],
         "keywords": cfg["keywords"],
+        "source_url": cfg.get("source_url", ""),
         "voice": cfg["voice"],
         "notes": cfg["notes"],
         "requested": cfg["outputs"],

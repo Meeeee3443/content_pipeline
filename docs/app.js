@@ -16,6 +16,7 @@ function buildIssueUrl(form) {
   params.set("client", data.get("client") || "");
   params.set("topic", data.get("topic") || "");
   params.set("keywords", data.get("keywords") || "");
+  params.set("source_url", data.get("source_url") || "");
   params.set("outputs", outputs);
   params.set("voice", data.get("voice") || "");
   params.set("notes", data.get("notes") || "");
@@ -215,6 +216,7 @@ async function initView() {
   if (metaEl) metaEl.innerHTML = `
     ${escapeHtml(e.client || "—")} · ${fmtDate(e.created_at)}
     · keywords: ${(e.keywords || []).map(escapeHtml).join(", ")}
+    ${e.source_url ? ` · source: <a href="${escapeHtml(e.source_url)}" target="_blank" rel="noopener">${escapeHtml(new URL(e.source_url).hostname)}</a>` : ""}
     ${e.issue_number ? ` · <a href="https://github.com/${OWNER}/${REPO}/issues/${e.issue_number}" target="_blank">issue #${e.issue_number}</a>` : ""}
   `;
 
