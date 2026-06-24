@@ -1,0 +1,46 @@
+{
+  "slug": "20260624-113447-all-about-sunflowers",
+  "issue_number": "16",
+  "client": "Demo",
+  "topic": "all about sunflowers",
+  "keywords": [
+    "sunflower",
+    "sunflower field",
+    "bee",
+    "garden",
+    "sunset",
+    "petals"
+  ],
+  "source_url": "",
+  "voice": "en-US-JennyNeural",
+  "notes": "Friendly, upbeat tone for a general audience. Cover their history, how they track the sun, growing tips, and uses like seeds and oil.",
+  "n_chapters": 15,
+  "requested": {
+    "short_copy": true,
+    "reel_script": true,
+    "long_script": true,
+    "images": true,
+    "reel_video": true,
+    "long_video": true
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt",
+      "prompt_used": "prompt_used.txt"
+    },
+    "images": {
+      "hero_16x9": "hero_16x9.png",
+      "hero_1x1": "hero_1x1.png"
+    },
+    "reel": {
+      "reel_9x16": "reel_9x16.mp4"
+    },
+    "long": {
+      "long_16x9": "long_16x9.mp4"
+    }
+  },
+  "errors": []
+}
