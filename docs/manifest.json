@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "slug": "20260624-091649-emissivity-is-a-measure-of-a-material-s",
+      "issue_number": "10",
+      "client": "Novota",
+      "topic": "Emissivity is a measure of a material's ability to emit energy as thermal radiation. It refers to the ability of a material to emit or absorb thermal radiation compared to a perfect black body, which is an idealized object that absorbs all radiation that falls on it.  High emissivity technology is an one-of-a-kind approach to improve the thermal management of materials and surfaces by making an object behave more like a black body in terms of its thermal radiation properties. In essence, high-emissivity coatings maximize the ability of the surface to emit thermal radiation.  High emissivity technology is a crucial aspect of many of our heat management coatings and paints, including heat reflective coating, heat dissipation coating, and heat conservation coating.",
+      "keywords": [
+        "Emissivity",
+        "High Emissivity Technology",
+        "Thermal Radiation",
+        "Thermal Management",
+        "High Emissivity Coatings",
+        "Heat Management Coatings",
+        "Black Body Radiation",
+        "Energy Emission",
+        "Thermal Energy",
+        "Surface Emissivity"
+      ],
+      "source_url": "https://novota.in/high-emissivity-technology/",
+      "voice": "en-IN-NeerjaNeural",
+      "notes": "",
+      "requested": {
+        "short_copy": true,
+        "reel_script": true,
+        "long_script": true,
+        "images": true,
+        "reel_video": true,
+        "long_video": false
+      },
+      "artifacts": {
+        "text": {
+          "short_copy": "short_copy.txt",
+          "reel_script": "reel_script.txt",
+          "long_script": "long_script.txt",
+          "image_prompt": "image_prompt.txt",
+          "source_article": "source_article.txt",
+          "prompt_used": "prompt_used.txt"
+        },
+        "images": {
+          "hero_16x9": "hero_16x9.png",
+          "hero_1x1": "hero_1x1.png"
+        },
+        "reel": {
+          "reel_9x16": "reel_9x16.mp4"
+        }
+      },
+      "errors": [],
+      "created_at": "2026-06-24T09:21:50.196796Z"
+    },
+    {
       "slug": "20260507-194623-heatxpres",
       "issue_number": "6",
       "client": "Novota",
