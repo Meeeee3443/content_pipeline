@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import re
 import sys
 import traceback
 from pathlib import Path
@@ -27,6 +28,15 @@ def _normalize_voice(raw: str) -> str:
     if not raw:
         return "en-US-ChristopherNeural"
     return VOICE_MAP.get(raw, raw if raw.startswith("en-") else "en-US-ChristopherNeural")
+
+
+def _chapters_for_length(raw: str) -> int:
+    """Map a length selection to a long-video chapter count (~1 chapter/min).
+    Accepts the issue-form label (e.g. 'Long (~10 min)') or a bare number of
+    minutes; clamps to a sane 3..16 range. Defaults to 6 when unset."""
+    m = re.search(r"\d+", str(raw or ""))
+    minutes = int(m.group()) if m else 6
+    return max(3, min(minutes, 16))
 
 
 def _outputs_from_checkboxes(checked: list[str]) -> dict:
@@ -67,6 +77,7 @@ def _parse_payload(payload: dict) -> dict:
         "source_url": str(get("source_url")).strip(),
         "voice": _normalize_voice(str(get("voice")).strip()),
         "notes": str(get("notes")).strip(),
+        "n_chapters": _chapters_for_length(get("length")),
         "outputs": _outputs_from_checkboxes(checked),
     }
 
@@ -80,6 +91,7 @@ def _from_cli(args) -> dict:
         "source_url": args.source_url or "",
         "voice": _normalize_voice(args.voice),
         "notes": args.notes or "",
+        "n_chapters": _chapters_for_length(args.minutes),
         "outputs": {
             "short_copy": "short_copy" in flags or "all" in flags,
             "reel_script": "reel_script" in flags or "all" in flags,
@@ -101,6 +113,7 @@ def main():
     ap.add_argument("--source-url", default="")
     ap.add_argument("--voice", default="en-US-ChristopherNeural")
     ap.add_argument("--notes", default="")
+    ap.add_argument("--minutes", default="6", help="approx long-video length in minutes (3..16)")
     ap.add_argument("--outputs", default="all", help="comma list: short_copy,reel_script,long_script,images,reel,long,all")
     args = ap.parse_args()
 
@@ -134,6 +147,7 @@ def main():
     print(f"Keywords:   {cfg['keywords']}")
     print(f"Source URL: {cfg.get('source_url') or '(none)'}")
     print(f"Voice:      {cfg['voice']}")
+    print(f"Long video: ~{cfg['n_chapters']} chapters")
     print(f"Outputs:    {[k for k,v in cfg['outputs'].items() if v]}")
     print(f"Slug:       {slug}")
     print("=" * 60)
@@ -151,6 +165,7 @@ def main():
                 cfg["topic"], cfg["keywords"], cfg["notes"],
                 cfg.get("source_url", ""),
                 out_dir,
+                cfg.get("n_chapters", 8),
             )
             artifacts["text"] = text["files"]
         except Exception as e:
@@ -193,6 +208,7 @@ def main():
         "source_url": cfg.get("source_url", ""),
         "voice": cfg["voice"],
         "notes": cfg["notes"],
+        "n_chapters": cfg.get("n_chapters"),
         "requested": cfg["outputs"],
         "artifacts": artifacts,
         "errors": errors,
