@@ -55,7 +55,7 @@ body:
           required: false
         - label: Reel video (9:16, ~60s)
           required: false
-        - label: Long video (16:9, ~3 min)
+        - label: Long video (16:9)
           required: false
 
   - type: dropdown
@@ -73,10 +73,24 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: length
+    attributes:
+      label: Long video length
+      description: Approximate length of the long video. Longer = more narration chapters.
+      options:
+        - Short (~3 min)
+        - Standard (~6 min)
+        - Long (~10 min)
+        - Extra long (~15 min)
+      default: 1
+    validations:
+      required: true
+
   - type: textarea
     id: notes
     attributes:
-      label: Notes
+      label: Description
       description: Anything else the pipeline should know? Tone, audience, must-mentions.
       placeholder: e.g. casual tone, target homeowners, mention government rebates
     validations:
