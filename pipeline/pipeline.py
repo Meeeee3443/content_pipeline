@@ -9,7 +9,7 @@ import traceback
 from pathlib import Path
 
 from .stages import stage1_text, stage2_image, stage3_reel, stage4_long
-from .utils import manifest
+from .utils import manifest, progress
 from .utils.slug import make_slug
 
 
@@ -158,8 +158,23 @@ def main():
     needs_text = any(
         cfg["outputs"][k] for k in ("short_copy", "reel_script", "long_script", "reel_video", "long_video", "images")
     )
+
+    # Live progress checklist — edits the issue comment in CI, no-op locally.
+    steps = []
+    if needs_text:
+        steps.append(("text", "Script"))
+    if cfg["outputs"]["images"]:
+        steps.append(("images", "Hero images"))
+    if cfg["outputs"]["reel_video"]:
+        steps.append(("reel", "Reel video"))
+    if cfg["outputs"]["long_video"]:
+        steps.append(("long", "Long video"))
+    prog = progress.Progress(steps)
+    prog.begin()
+
     text = None
     if needs_text:
+        prog.set("text", "running")
         try:
             text = stage1_text.run(
                 cfg["topic"], cfg["keywords"], cfg["notes"],
@@ -168,36 +183,58 @@ def main():
                 cfg.get("n_chapters", 8),
             )
             artifacts["text"] = text["files"]
+            prog.set("text", "done")
         except Exception as e:
             errors.append(f"stage1: {e}")
             traceback.print_exc()
+            prog.set("text", "failed")
 
-    if cfg["outputs"]["images"] and text:
-        try:
-            artifacts["images"] = stage2_image.run(text["image_prompt"], out_dir)
-        except Exception as e:
-            errors.append(f"stage2: {e}")
-            traceback.print_exc()
+    if cfg["outputs"]["images"]:
+        if text:
+            prog.set("images", "running")
+            try:
+                artifacts["images"] = stage2_image.run(text["image_prompt"], out_dir)
+                prog.set("images", "done")
+            except Exception as e:
+                errors.append(f"stage2: {e}")
+                traceback.print_exc()
+                prog.set("images", "failed")
+        else:
+            prog.set("images", "skipped")
 
-    if cfg["outputs"]["reel_video"] and text:
-        try:
-            artifacts["reel"] = stage3_reel.run(
-                text["reel_script"], cfg["keywords"], cfg["voice"],
-                out_dir, work_dir / "reel",
-            )
-        except Exception as e:
-            errors.append(f"stage3: {e}")
-            traceback.print_exc()
+    if cfg["outputs"]["reel_video"]:
+        if text:
+            prog.set("reel", "running")
+            try:
+                artifacts["reel"] = stage3_reel.run(
+                    text["reel_script"], cfg["keywords"], cfg["voice"],
+                    out_dir, work_dir / "reel",
+                )
+                prog.set("reel", "done")
+            except Exception as e:
+                errors.append(f"stage3: {e}")
+                traceback.print_exc()
+                prog.set("reel", "failed")
+        else:
+            prog.set("reel", "skipped")
 
-    if cfg["outputs"]["long_video"] and text:
-        try:
-            artifacts["long"] = stage4_long.run(
-                text["long_script"], cfg["keywords"], cfg["voice"],
-                out_dir, work_dir / "long",
-            )
-        except Exception as e:
-            errors.append(f"stage4: {e}")
-            traceback.print_exc()
+    if cfg["outputs"]["long_video"]:
+        if text:
+            prog.set("long", "running")
+            try:
+                artifacts["long"] = stage4_long.run(
+                    text["long_script"], cfg["keywords"], cfg["voice"],
+                    out_dir, work_dir / "long",
+                )
+                prog.set("long", "done")
+            except Exception as e:
+                errors.append(f"stage4: {e}")
+                traceback.print_exc()
+                prog.set("long", "failed")
+        else:
+            prog.set("long", "skipped")
+
+    prog.done(bool(errors))
 
     summary = {
         "slug": slug,
