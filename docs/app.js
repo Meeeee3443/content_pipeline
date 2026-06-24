@@ -129,18 +129,23 @@ function renderCard(e) {
 
 // ----- In-progress cards (live, via the public GitHub API; no backend) -----
 async function fetchInProgress() {
+  // Match by the "[Content]" title prefix, not a label: the issue-form template's
+  // `content-request` label isn't applied (it doesn't exist in the repo), so a
+  // label filter returns nothing. Title prefix is reliable.
   const url = `https://api.github.com/repos/${OWNER}/${REPO}/issues`
-    + `?state=open&labels=content-request&per_page=30&sort=created&direction=desc`;
+    + `?state=open&per_page=30&sort=created&direction=desc`;
   try {
     const r = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
     if (!r.ok) return null; // unauth rate limit is 60/hr — on miss, just skip silently
     const issues = await r.json();
-    return issues.filter(i => !i.pull_request).map(i => ({
-      topic: (i.title || "").replace(/^\s*\[content\]\s*/i, "").trim() || "(untitled)",
-      failed: (i.labels || []).some(l => (l.name || l) === "failed"),
-      created_at: i.created_at,
-      url: i.html_url,
-    }));
+    return issues
+      .filter(i => !i.pull_request && /^\s*\[content\]/i.test(i.title || ""))
+      .map(i => ({
+        topic: (i.title || "").replace(/^\s*\[content\]\s*/i, "").trim() || "(untitled)",
+        failed: (i.labels || []).some(l => (l.name || l) === "failed"),
+        created_at: i.created_at,
+        url: i.html_url,
+      }));
   } catch { return null; }
 }
 
