@@ -127,10 +127,71 @@ function renderCard(e) {
   `;
 }
 
+// ----- In-progress cards (live, via the public GitHub API; no backend) -----
+async function fetchInProgress() {
+  const url = `https://api.github.com/repos/${OWNER}/${REPO}/issues`
+    + `?state=open&labels=content-request&per_page=30&sort=created&direction=desc`;
+  try {
+    const r = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) return null; // unauth rate limit is 60/hr — on miss, just skip silently
+    const issues = await r.json();
+    return issues.filter(i => !i.pull_request).map(i => ({
+      topic: (i.title || "").replace(/^\s*\[content\]\s*/i, "").trim() || "(untitled)",
+      failed: (i.labels || []).some(l => (l.name || l) === "failed"),
+      created_at: i.created_at,
+      url: i.html_url,
+    }));
+  } catch { return null; }
+}
+
+function skeletonCard(it) {
+  return `
+    <a class="card card-skeleton" href="${it.url}" target="_blank" rel="noopener" title="View live progress on GitHub">
+      <div class="thumb thumb-skeleton"><span class="shimmer"></span></div>
+      <div class="card-body">
+        <div class="card-head">
+          <h2>${escapeHtml(it.topic)}</h2>
+          <span class="badge badge-proc">generating…</span>
+        </div>
+        <div class="card-meta"><span>started ${fmtDate(it.created_at)}</span></div>
+        <div class="sk-lines"><span></span><span></span></div>
+      </div>
+    </a>`;
+}
+
+function failedCard(it) {
+  return `
+    <a class="card card-failed" href="${it.url}" target="_blank" rel="noopener" title="View the error log on GitHub">
+      <div class="thumb thumb-empty">failed</div>
+      <div class="card-body">
+        <div class="card-head">
+          <h2>${escapeHtml(it.topic)}</h2>
+          <span class="badge badge-err">failed</span>
+        </div>
+        <div class="card-meta"><span>started ${fmtDate(it.created_at)} · view log</span></div>
+      </div>
+    </a>`;
+}
+
+function renderInProgress(items) {
+  const host = document.getElementById("in-progress");
+  if (!host) return;
+  host.innerHTML = (items && items.length)
+    ? `<div class="grid">${items.map(it => it.failed ? failedCard(it) : skeletonCard(it)).join("")}</div>`
+    : "";
+}
+
 async function initDashboard() {
   const root = document.getElementById("entries");
   if (!root) return;
   const filter = getClientFilter();
+
+  // Live in-progress / failed cards from open issues (best-effort, no backend).
+  if (!filter) {
+    const refresh = async () => renderInProgress(await fetchInProgress());
+    refresh();
+    setInterval(refresh, 90000);
+  }
 
   if (filter) {
     const titleEl = document.getElementById("dash-title");
