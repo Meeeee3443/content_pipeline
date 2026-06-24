@@ -1,0 +1,50 @@
+{
+  "slug": "20260624-095732-high-emissivity-technology",
+  "issue_number": "14",
+  "client": "NOVOTA",
+  "topic": "High Emissivity Technology",
+  "keywords": [
+    ":Emissivity",
+    "High Emissivity Technology",
+    "Thermal Radiation",
+    "Thermal Management",
+    "High Emissivity Coatings",
+    "Heat Management Coatings",
+    "Black Body Radiation",
+    "Energy Emission",
+    "Thermal Energy",
+    "Surface Emissivity"
+  ],
+  "source_url": "https://novota.in/high-emissivity-technology/",
+  "voice": "en-IN-NeerjaNeural",
+  "notes": "Create a premium corporate industrial technology video about High Emissivity Technology. Show advanced thermal management solutions in modern industrial environments. Start with thermal imaging visuals showing heat radiation from machinery and metal surfaces. Transition to high-tech factories, engineers monitoring equipment, industrial coating applications, and energy-efficient manufacturing processes.\n\nInclude realistic heat flow animations, infrared thermal camera effects, glowing heat dissipation visuals, advanced coating technology on metal surfaces, and futuristic industrial environments. Show surfaces efficiently releasing excess heat, improving thermal performance and energy efficiency.\n\nHighlight these key messages through cinematic text animations:\n\nWhat is High Emissivity Technology?\nAdvanced coatings that enhance a surface's ability to emit thermal radiation and manage heat efficiently.\n\nBenefits:\n\u2022 Improves Energy Efficiency\n\u2022 Enhanced Thermal Performance\n\u2022 Versatile Industrial Applications\n\nApplications:\n\u2022 Heat Reflective Coatings\n\u2022 Heat Dissipation Coatings\n\u2022 Heat Conservation Coatings\n\nUse professional camera movements, smooth transitions, realistic industrial settings, clean corporate style, high-detail manufacturing equipment, engineers in safety gear, thermal imaging overlays, futuristic technology graphics, and premium motion graphics.\n\nStyle: Corporate, Industrial, Futuristic, Professional\n\nQuality: Ultra-realistic, 4K, Cinematic\n\nAspect Ratio: 9:16 Vertical for Reels and Shorts\n\nDuration: 45 seconds\n\nColor Palette: Blue, Silver, White, Industrial Grey, Technology-themed visuals\n\nMood: Innovative, Professional, Scientific, Energy-Efficient\n\nFinal Scene:\nModern industrial facility with glowing thermal management graphics and the text:\n\n\"Transforming Heat into Efficiency\"\n\nWebsite Display:\nnovota.in",
+  "requested": {
+    "short_copy": true,
+    "reel_script": true,
+    "long_script": true,
+    "images": true,
+    "reel_video": true,
+    "long_video": true
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt",
+      "source_article": "source_article.txt",
+      "prompt_used": "prompt_used.txt"
+    },
+    "images": {
+      "hero_16x9": "hero_16x9.png",
+      "hero_1x1": "hero_1x1.png"
+    },
+    "reel": {
+      "reel_9x16": "reel_9x16.mp4"
+    },
+    "long": {
+      "long_16x9": "long_16x9.mp4"
+    }
+  },
+  "errors": []
+}
