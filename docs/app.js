@@ -19,6 +19,7 @@ function buildIssueUrl(form) {
   params.set("source_url", data.get("source_url") || "");
   params.set("outputs", outputs);
   params.set("voice", data.get("voice") || "");
+  params.set("length", data.get("length") || "");
   params.set("notes", data.get("notes") || "");
   return `https://github.com/${OWNER}/${REPO}/issues/new?${params.toString()}`;
 }
@@ -32,6 +33,36 @@ function initForm() {
     const url = buildIssueUrl(form);
     window.open(url, "_blank");
   });
+}
+
+// ----- Help modal (index.html) -----
+function initHelp() {
+  const modal = document.getElementById("help-modal");
+  const openBtn = document.getElementById("help-btn");
+  const closeBtn = document.getElementById("help-close");
+  if (!modal || !openBtn) return;
+
+  let lastFocused = null;
+
+  function open() {
+    lastFocused = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (closeBtn) closeBtn.focus();
+  }
+  function close() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  openBtn.addEventListener("click", open);
+  if (closeBtn) closeBtn.addEventListener("click", close);
+  // Click on the backdrop (outside the panel) closes; clicks inside it don't.
+  modal.addEventListener("click", (ev) => { if (ev.target === modal) close(); });
+  // Escape closes.
+  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") close(); });
 }
 
 // ----- Shared helpers -----
@@ -267,6 +298,7 @@ async function initView() {
 // ----- Boot -----
 document.addEventListener("DOMContentLoaded", () => {
   initForm();
+  initHelp();
   initDashboard();
   initView();
 });
