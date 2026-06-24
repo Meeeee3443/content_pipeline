@@ -20,6 +20,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Comment on issue (started)
+        id: started
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ⏳ **Generation started** — this comment will update with per-stage progress as it runs. Text is quick; a full run with videos can take ~25–40 minutes.
+
+            Live logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Clear stale failed label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh issue edit "${{ github.event.issue.number }}" --remove-label failed --repo "$GITHUB_REPOSITORY" || true
+
       - name: Parse issue form
         id: parse
         uses: stefanbuck/github-issue-parser@v3
@@ -58,13 +73,17 @@ jobs:
           sleep 5
 
       - name: Pull Ollama model
-        run: ollama pull llama3.2:3b
+        run: ollama pull qwen2.5:7b
 
       - name: Run pipeline
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_PAYLOAD: ${{ steps.parse.outputs.jsonString }}
+          PROGRESS_COMMENT_ID: ${{ steps.started.outputs.comment-id }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python -m pipeline.pipeline \
             --payload-env ISSUE_PAYLOAD \
@@ -85,9 +104,9 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Pipeline run complete.
+            ✅ **Pipeline run complete** — your content is ready.
 
-            View your content on the dashboard:
+            View it on the dashboard:
             https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dashboard.html
 
       - name: Comment on issue (failure)
@@ -96,12 +115,20 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Pipeline run failed.
+            ❌ **Pipeline run failed.**
 
             See the full log:
             https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Any partial debug artifacts (e.g. `raw_response.txt`) were committed to `outputs/`.
+
+      - name: Label issue as failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create failed --color D73A4A --description "Generation failed" --force --repo "$GITHUB_REPOSITORY" || true
+          gh issue edit "${{ github.event.issue.number }}" --add-label failed --repo "$GITHUB_REPOSITORY" || true
 
       - name: Close issue
         if: success()

@@ -19,6 +19,7 @@ function buildIssueUrl(form) {
   params.set("source_url", data.get("source_url") || "");
   params.set("outputs", outputs);
   params.set("voice", data.get("voice") || "");
+  params.set("length", data.get("length") || "");
   params.set("notes", data.get("notes") || "");
   return `https://github.com/${OWNER}/${REPO}/issues/new?${params.toString()}`;
 }
@@ -32,6 +33,36 @@ function initForm() {
     const url = buildIssueUrl(form);
     window.open(url, "_blank");
   });
+}
+
+// ----- Help modal (index.html) -----
+function initHelp() {
+  const modal = document.getElementById("help-modal");
+  const openBtn = document.getElementById("help-btn");
+  const closeBtn = document.getElementById("help-close");
+  if (!modal || !openBtn) return;
+
+  let lastFocused = null;
+
+  function open() {
+    lastFocused = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (closeBtn) closeBtn.focus();
+  }
+  function close() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  openBtn.addEventListener("click", open);
+  if (closeBtn) closeBtn.addEventListener("click", close);
+  // Click on the backdrop (outside the panel) closes; clicks inside it don't.
+  modal.addEventListener("click", (ev) => { if (ev.target === modal) close(); });
+  // Escape closes.
+  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") close(); });
 }
 
 // ----- Shared helpers -----
@@ -96,10 +127,71 @@ function renderCard(e) {
   `;
 }
 
+// ----- In-progress cards (live, via the public GitHub API; no backend) -----
+async function fetchInProgress() {
+  const url = `https://api.github.com/repos/${OWNER}/${REPO}/issues`
+    + `?state=open&labels=content-request&per_page=30&sort=created&direction=desc`;
+  try {
+    const r = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) return null; // unauth rate limit is 60/hr — on miss, just skip silently
+    const issues = await r.json();
+    return issues.filter(i => !i.pull_request).map(i => ({
+      topic: (i.title || "").replace(/^\s*\[content\]\s*/i, "").trim() || "(untitled)",
+      failed: (i.labels || []).some(l => (l.name || l) === "failed"),
+      created_at: i.created_at,
+      url: i.html_url,
+    }));
+  } catch { return null; }
+}
+
+function skeletonCard(it) {
+  return `
+    <a class="card card-skeleton" href="${it.url}" target="_blank" rel="noopener" title="View live progress on GitHub">
+      <div class="thumb thumb-skeleton"><span class="shimmer"></span></div>
+      <div class="card-body">
+        <div class="card-head">
+          <h2>${escapeHtml(it.topic)}</h2>
+          <span class="badge badge-proc">generating…</span>
+        </div>
+        <div class="card-meta"><span>started ${fmtDate(it.created_at)}</span></div>
+        <div class="sk-lines"><span></span><span></span></div>
+      </div>
+    </a>`;
+}
+
+function failedCard(it) {
+  return `
+    <a class="card card-failed" href="${it.url}" target="_blank" rel="noopener" title="View the error log on GitHub">
+      <div class="thumb thumb-empty">failed</div>
+      <div class="card-body">
+        <div class="card-head">
+          <h2>${escapeHtml(it.topic)}</h2>
+          <span class="badge badge-err">failed</span>
+        </div>
+        <div class="card-meta"><span>started ${fmtDate(it.created_at)} · view log</span></div>
+      </div>
+    </a>`;
+}
+
+function renderInProgress(items) {
+  const host = document.getElementById("in-progress");
+  if (!host) return;
+  host.innerHTML = (items && items.length)
+    ? `<div class="grid">${items.map(it => it.failed ? failedCard(it) : skeletonCard(it)).join("")}</div>`
+    : "";
+}
+
 async function initDashboard() {
   const root = document.getElementById("entries");
   if (!root) return;
   const filter = getClientFilter();
+
+  // Live in-progress / failed cards from open issues (best-effort, no backend).
+  if (!filter) {
+    const refresh = async () => renderInProgress(await fetchInProgress());
+    refresh();
+    setInterval(refresh, 90000);
+  }
 
   if (filter) {
     const titleEl = document.getElementById("dash-title");
@@ -267,6 +359,7 @@ async function initView() {
 // ----- Boot -----
 document.addEventListener("DOMContentLoaded", () => {
   initForm();
+  initHelp();
   initDashboard();
   initView();
 });

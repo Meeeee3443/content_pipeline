@@ -41,9 +41,16 @@ def run(long_script: str, keywords: list[str], voice: str, out_dir: Path, work_d
     norm_dir.mkdir(exist_ok=True)
     norm_clips = []
     for i, src in enumerate(raw_clips):
-        dst = norm_dir / f"n_{i:02d}.mp4"
+        dst = norm_dir / f"n_{i:03d}.mp4"
         ff.normalize_clip(src, dst, WIDTH, HEIGHT, clip_seconds)
         norm_clips.append(dst)
+
+    # Loop footage if Pexels returned fewer unique clips than the narration needs,
+    # so the video always covers the full audio (mux uses -shortest).
+    if norm_clips and len(norm_clips) < n_clips:
+        reps = n_clips // len(norm_clips) + 1
+        norm_clips = (norm_clips * reps)[:n_clips]
+        print(f"  looped {len(set(norm_clips))} unique clips up to {n_clips} to cover {audio_dur:.0f}s")
 
     silent = work_dir / "silent.mp4"
     ff.concat_clips(norm_clips, silent)

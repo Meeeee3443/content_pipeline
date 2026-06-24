@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Content Pipeline — New request</title>
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 <div class="wrap">
@@ -20,6 +20,14 @@
       </div>
       <nav>
         <a href="dashboard.html">Dashboard</a>
+        <button type="button" id="help-btn" class="help-link" aria-haspopup="dialog" aria-controls="help-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M9.6 9.4a2.4 2.4 0 0 1 4.7.7c0 1.6-2.3 2.2-2.3 2.2" stroke-linecap="round"/>
+            <circle cx="12" cy="16.4" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+          Help
+        </button>
       </nav>
     </div>
     <h1>New <em>request</em></h1>
@@ -57,7 +65,7 @@
         <label class="check"><input type="checkbox" name="outputs" value="Long script" checked><span>Long script <em style="color:var(--muted)">(text)</em></span></label>
         <label class="check"><input type="checkbox" name="outputs" value="Hero images" checked><span>Hero images <em style="color:var(--muted)">(16:9 + 1:1)</em></span></label>
         <label class="check"><input type="checkbox" name="outputs" value="Reel video" checked><span>Reel video <em style="color:var(--muted)">(9:16, ~60s)</em></span></label>
-        <label class="check"><input type="checkbox" name="outputs" value="Long video"><span>Long video <em style="color:var(--muted)">(16:9, ~3 min)</em></span></label>
+        <label class="check"><input type="checkbox" name="outputs" value="Long video"><span>Long video <em style="color:var(--muted)">(16:9)</em></span></label>
       </fieldset>
 
       <label>
@@ -73,9 +81,20 @@
       </label>
 
       <label>
-        <span>Brief / rough prompt</span>
-        <textarea name="notes" rows="4" placeholder="Tone, audience, must-mentions, or a rough prompt — anything written here is folded into the brief and used to guide the script."></textarea>
-        <small>Free-form. The model uses this as part of the brief, alongside the topic, keywords, and any source article.</small>
+        <span>Long video length</span>
+        <select name="length">
+          <option>Short (~3 min)</option>
+          <option selected>Standard (~6 min)</option>
+          <option>Long (~10 min)</option>
+          <option>Extra long (~15 min)</option>
+        </select>
+        <small>Approximate length of the long video. Longer = more narration chapters (the reel stays ~60s).</small>
+      </label>
+
+      <label>
+        <span>Description</span>
+        <textarea name="notes" rows="4" placeholder="Tone, audience, must-mentions, or a rough prompt — anything written here is used to guide the script."></textarea>
+        <small>Free-form. The model uses this alongside the topic, keywords, and any source article.</small>
       </label>
 
       <button type="button" id="generate-btn">Generate &rarr;</button>
@@ -83,6 +102,47 @@
     </form>
   </main>
 </div>
-<script src="app.js?v=5"></script>
+
+<!-- Help modal -->
+<div id="help-modal" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <div class="modal-head">
+      <h2 id="help-title">How to fill this in</h2>
+      <button type="button" class="modal-close" id="help-close" aria-label="Close help">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="help-intro">A few seconds of detail here makes the generated content much better. Here's what each field is for.</p>
+      <dl class="help-list">
+        <dt>Client</dt>
+        <dd>Who the content is for. Used to label and filter work on the dashboard. <em>e.g. Acme Co</em></dd>
+
+        <dt>Topic</dt>
+        <dd>The one subject of the content, in plain words. It becomes the title and the spine of every script, so keep it to a single clear idea. <em>e.g. how solar panels work</em></dd>
+
+        <dt>Keywords</dt>
+        <dd>Comma-separated, concrete <strong>visual</strong> words. They're used to search stock footage, so prefer things a camera can show — objects, places, people, actions.
+          <span class="good">Good: solar panel, rooftop, sunrise, technician</span>
+          <span class="bad">Avoid: efficiency, savings, the future</span></dd>
+
+        <dt>Source URL <span class="opt">optional</span></dt>
+        <dd>A link to an article the scripts should be based on. If you add one, we fetch the page and use its main text as the factual source, so the script won't make things up. Leave it blank to let the model write from the topic alone. <em>e.g. https://example.com/solar-guide</em></dd>
+
+        <dt>Outputs</dt>
+        <dd>Tick the deliverables you want — any combination. Text pieces are quick; the videos take longer to render.</dd>
+
+        <dt>Voice</dt>
+        <dd>The narration voice used for the reel and long video. Each option notes its accent and tone.</dd>
+
+        <dt>Long video length</dt>
+        <dd>Roughly how long the long video should run. It sets how many narration chapters the script has (about one minute each), so a longer pick means a longer video. The reel always stays ~60s. <em>Longer videos take more time to render.</em></dd>
+
+        <dt>Description <span class="opt">optional</span></dt>
+        <dd>Anything else that should steer the writing: tone, target audience, must-mention points, or a rough draft. It's sent to the model alongside the topic and source article. <em>e.g. casual tone, target homeowners, mention government rebates</em></dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=8"></script>
 </body>
 </html>
