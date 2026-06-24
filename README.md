@@ -25,10 +25,10 @@ Maintained by [@Meeeee3443](https://github.com/Meeeee3443).
 
 | Stage | Output | Tool |
 |---|---|---|
-| 1 | Short copy · reel script · long script · image prompt | Ollama, `llama3.2:3b`, JSON-schema output |
+| 1 | Short copy · reel script · long script · image prompt | Ollama, `qwen2.5:7b`, JSON-schema output |
 | 2 | Hero images (16:9 and 1:1) | Pollinations.ai (free HTTP, no key) |
 | 3 | Vertical reel, ~60s, 9:16, with burned subtitles | Edge TTS + Pexels stock footage + FFmpeg |
-| 4 | Long video, ~6–8 min, 16:9, with burned subtitles | Edge TTS + Pexels stock footage + FFmpeg |
+| 4 | Long video, length chosen per request (~3–15 min), 16:9, with burned subtitles | Edge TTS + Pexels stock footage + FFmpeg |
 
 The long script is generated as 8 narrative chapters
 (120–180 words each) for coherence at length. Each chapter follows a
@@ -108,7 +108,7 @@ pip install -r requirements.txt
 
 # System dependencies
 # - FFmpeg + ImageMagick (apt / brew / chocolatey)
-# - Ollama, then: ollama pull llama3.2:3b
+# - Ollama, then: ollama pull qwen2.5:7b
 
 export PEXELS_API_KEY=your_key
 python -m pipeline.pipeline \
@@ -122,6 +122,7 @@ CLI flags:
 - `--outputs` — comma-separated subset of `short_copy, reel_script,
   long_script, images, reel, long`, or `all`
 - `--voice` — full Edge TTS voice id, e.g. `en-IN-NeerjaNeural`
+- `--minutes` — approx long-video length, 3–16 (≈ one chapter per minute)
 
 Local outputs land in `docs/outputs/<slug>/` (same as the Action runs).
 
@@ -132,7 +133,7 @@ Local outputs land in `docs/outputs/<slug>/` (same as the Action runs).
   sans (Inter) body. WCAG AAA contrast across all text (≥7:1).
 - **Pipeline**: Python 3.11, ~600 lines across 4 stages.
 - **Models / services**:
-  - Ollama `llama3.2:3b` (local on Action runner) — text generation
+  - Ollama `qwen2.5:7b` (local on Action runner) — text generation
   - Pollinations.ai — image generation
   - Microsoft Edge TTS public endpoint — voiceover
   - Pexels API — stock video footage
@@ -149,8 +150,8 @@ public Microsoft endpoint; Ollama runs on the Action runner.
 ## Roadmap
 
 - [ ] Long video target length: today ~6–8 min once Stage 1 reliably
-  emits 8 chapters; bigger model upgrade (`qwen2.5:7b` or hosted Groq
-  `llama-3.3-70b-versatile`) for higher script quality
+  emits 8 chapters; optional hosted upgrade (Groq
+  `llama-3.3-70b-versatile`) for even higher script quality
 - [ ] Move large MP4s out of the repo to GitHub Releases once the repo
   exceeds ~1 GB total
 - [ ] Password protection on per-client dashboards (Cloudflare Worker
