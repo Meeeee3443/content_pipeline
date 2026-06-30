@@ -1,0 +1,39 @@
+{
+  "slug": "20260630-061121-ai-tips",
+  "issue_number": "17",
+  "client": "pickmyurl",
+  "topic": "AI Tips",
+  "keywords": [
+    "AI Tools",
+    "Artificial Intelligence",
+    "AI Tips",
+    "Free AI Tools",
+    "Best AI Tools",
+    "AI for Business"
+  ],
+  "source_url": "",
+  "voice": "en-IN-NeerjaNeural",
+  "notes": "3 Free AI Tools Every Business Owner Should Use in 2026\n\nHook (0\u20133 sec)\n\n\ud83d\udde3\ufe0f \"Still doing everything manually? These 3 FREE AI tools can save you hours every week!\"\n\nScene 1 (3\u20138 sec)\n\n\ud83d\udca1 Tool #1: ChatGPT\n\nWrite emails\nCreate social media posts\nGenerate blog ideas\nScene 2 (8\u201314 sec)\n\n\ud83d\udca1 Tool #2: Canva AI\n\nDesign social media posts\nCreate presentations\nGenerate images quickly\nScene 3 (14\u201320 sec)\n\n\ud83d\udca1 Tool #3: Google Gemini\n\nResearch topics\nSummarize documents\nBrainstorm business ideas\nEnding (20\u201325 sec)\n\n\ud83d\udde3\ufe0f \"Which AI tool do you use the most? Comment below and follow for more AI business tips!\"",
+  "n_chapters": 3,
+  "requested": {
+    "short_copy": false,
+    "reel_script": false,
+    "long_script": false,
+    "images": false,
+    "reel_video": true,
+    "long_video": false
+  },
+  "artifacts": {
+    "text": {
+      "short_copy": "short_copy.txt",
+      "reel_script": "reel_script.txt",
+      "long_script": "long_script.txt",
+      "image_prompt": "image_prompt.txt",
+      "prompt_used": "prompt_used.txt"
+    },
+    "reel": {
+      "reel_9x16": "reel_9x16.mp4"
+    }
+  },
+  "errors": []
+}

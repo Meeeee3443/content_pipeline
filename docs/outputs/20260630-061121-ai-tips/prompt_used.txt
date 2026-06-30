@@ -1,0 +1,65 @@
+You are a social media content writer and video scriptwriter.
+
+Topic: AI Tips
+Keywords: AI Tools, Artificial Intelligence, AI Tips, Free AI Tools, Best AI Tools, AI for Business
+Client brief / rough prompt: 3 Free AI Tools Every Business Owner Should Use in 2026
+
+Hook (0–3 sec)
+
+🗣️ "Still doing everything manually? These 3 FREE AI tools can save you hours every week!"
+
+Scene 1 (3–8 sec)
+
+💡 Tool #1: ChatGPT
+
+Write emails
+Create social media posts
+Generate blog ideas
+Scene 2 (8–14 sec)
+
+💡 Tool #2: Canva AI
+
+Design social media posts
+Create presentations
+Generate images quickly
+Scene 3 (14–20 sec)
+
+💡 Tool #3: Google Gemini
+
+Research topics
+Summarize documents
+Brainstorm business ideas
+Ending (20–25 sec)
+
+🗣️ "Which AI tool do you use the most? Comment below and follow for more AI business tips!"
+
+Write content based on the brief above. If a source article is provided,
+extract the key facts and ideas from it; do not invent details not supported
+by the inputs.
+
+Return a JSON object with these exact fields.
+
+short_copy:
+  150-200 words. Hook in the first line. Platform-neutral. No hashtags.
+
+reel_script:
+  ~140 words (about 60 seconds spoken). Conversational tone.
+  Plain prose only. No stage directions. Read aloud by a TTS voice.
+
+long_chapters:
+  An array of EXACTLY 3 chapters. Together they form a
+  roughly 3-minute spoken script. Each chapter must be 130-170
+  words of plain narration — a complete paragraph with multiple sentences.
+  The chapters together tell a coherent story arc: open with a hook that
+  names the topic and why it matters; develop it across the middle chapters
+  (what it is in plain language, background and context, how it works,
+  concrete real-world examples, and implications); and close the final
+  chapter with the one thing to remember plus a call to action.
+  No chapter titles, no numbers, no markdown, no [stage directions].
+  Each chapter is plain prose that flows naturally when read aloud.
+
+image_prompt:
+  ONE image generation prompt, max 60 words. Style: cinematic, photorealistic.
+  Subject, mood, lighting, color palette, composition.
+
+All fields are required. Return JSON only.
