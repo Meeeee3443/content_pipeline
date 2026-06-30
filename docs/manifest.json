@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "slug": "20260630-072454-high-emissivity-coating-technology",
+      "issue_number": "18",
+      "client": "Novota",
+      "topic": "High Emissivity Coating Technology",
+      "keywords": [
+        "thermal coating",
+        "High emissivity",
+        "industrial equipment"
+      ],
+      "source_url": "https://novota.in/",
+      "voice": "en-IN-NeerjaNeural",
+      "notes": "\ud83c\udfac MASTER AI VIDEO CREATION PROMPT\nTitle: High Emissivity Coating Technology\nDuration: 20 seconds (5 sections \u00d7 4 seconds each)\nAudience: Production Managers, Maintenance Managers, Plant Heads, Machine Supervisors\nTone: Professional, industrial, powerful, clear, practical\nStyle: Real industrial environment, high-temperature equipment, cinematic lighting, strong contrast, heat glow effects\nLanguage: Simple English\nGoal: Clearly explain how High Emissivity Coating improves heat transfer, saves fuel, protects equipment, and reduces maintenance.\n\nCreate a 20-second industrial corporate video divided into 5 sections of exactly 4 seconds each. Use realistic industrial visuals such as furnaces, boilers, transformers, kilns, reactors, and heat-generating machines. Show visible heat glow effects and thermal radiation visuals. Include smooth transitions and bold on-screen text highlighting benefits.\n\nThe solution is presented by Arnym Eco Green Pvt Ltd (arnymecogreen.com) as an advanced thermal efficiency improvement technology for industrial applications.\n\n\ud83c\udf99\ufe0f VOICEOVER SCRIPT (STRICTLY 4 SECONDS EACH)\n\ud83c\udfa5 Section 1 (0\u20134 sec)\nVoiceover:\n\u201cHigh Emissivity Coating Technology improves heat transfer in your industrial equipment.\u201d\n\nVisual to Generate:\n\nLarge industrial furnace or boiler operating at high temperature\nOrange heat glow inside chamber\nText overlay: \u201cImprove Heat Transfer\u201d\nSubtle thermal radiation animation moving outward\n\ud83c\udfa5 Section 2 (4\u20138 sec)\nVoiceover:\n\u201cIt increases thermal radiation, so more heat reaches your process.\u201d\n\nVisual to Generate:\n\nClose-up of coated inner furnace wall\nHeat waves clearly moving toward metal load/material\nBefore-and-after split screen (dull surface vs coated glowing surface)\nText overlay: \u201cMore Heat to Load\u201d\n\ud83c\udfa5 Section 3 (8\u201312 sec)\nVoiceover:\n\u201cThis means lower fuel consumption and up to ten percent energy savings.\u201d\n\nVisual to Generate:\n\nFuel gauge decreasing\nEnergy meter dropping\nFactory dashboard showing \u201c-10% Fuel\u201d\nText overlay: \u201cSave Up to 10% Fuel\u201d\nManager reviewing tablet with energy graph trending downward\n\ud83c\udfa5 Section 4 (12\u201316 sec)\nVoiceover:\n\u201cIt protects refractory, reduces scale, and extends equipment life.\u201d\n\nVisual to Generate:\n\nRefractory lining comparison (cracked vs protected coated surface)\nShield protection animation over furnace lining\nReduced scale buildup visual\nText overlay: \u201cLonger Equipment Life\u201d\n\ud83c\udfa5 Section 5 (16\u201320 sec)\nVoiceover:\n\u201cBoost efficiency, reduce downtime, and improve plant performance.\u201d\n\nVisual to Generate:\n\nConfident plant manager inspecting equipment\nSmooth-running production line\nGreen efficiency indicator rising\nText overlay: \u201cHigher Efficiency. Less Downtime.\u201d\n\u2705 5-SECOND CTA (20\u201325 sec)\nVoiceover CTA:\n\u201cUpgrade your thermal efficiency today with Arnym Eco Green. Contact us now.\u201d\n\nCTA Visual to Generate:\n\nLogo of Arnym Eco Green Pvt Ltd\nIndustrial furnace background with subtle heat glow\nText on screen:\n\u201cReduce Fuel Costs\u201d\n\u201cExtend Equipment Life\u201d\n\u201cImprove Efficiency\u201d\n\u201carnymecogreen.com\u201d\n\u201cBook a Technical Consultation Today\u201d\n\ud83c\udfa8 IMAGE GENERATION GUIDE\nGenerate these 5 key industrial visuals:\n\nHigh-temperature furnace interior with glowing orange heat\nClose-up ceramic coated refractory wall radiating heat waves\nIndustrial energy savings dashboard with 10% fuel reduction graphic\nProtected refractory lining with shield effect\nProduction manager in PPE inspecting smooth running machinery\nStyle:\n\nRealistic industrial photography\nCinematic lighting\n16:9 ratio\n4K resolution\nWarm orange heat tones\nProfessional corporate presentation style",
+      "n_chapters": 3,
+      "requested": {
+        "short_copy": false,
+        "reel_script": false,
+        "long_script": false,
+        "images": true,
+        "reel_video": true,
+        "long_video": false
+      },
+      "artifacts": {
+        "text": {
+          "short_copy": "short_copy.txt",
+          "reel_script": "reel_script.txt",
+          "long_script": "long_script.txt",
+          "image_prompt": "image_prompt.txt",
+          "source_article": "source_article.txt",
+          "prompt_used": "prompt_used.txt"
+        },
+        "images": {
+          "hero_16x9": "hero_16x9.png",
+          "hero_1x1": "hero_1x1.png"
+        },
+        "reel": {
+          "reel_9x16": "reel_9x16.mp4"
+        }
+      },
+      "errors": [],
+      "created_at": "2026-06-30T07:30:45.462054Z"
+    },
+    {
       "slug": "20260630-061121-ai-tips",
       "issue_number": "17",
       "client": "pickmyurl",

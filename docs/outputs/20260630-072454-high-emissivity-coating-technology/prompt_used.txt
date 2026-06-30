@@ -1,0 +1,189 @@
+You are a social media content writer and video scriptwriter.
+
+Topic: High Emissivity Coating Technology
+Keywords: thermal coating, High emissivity, industrial equipment
+Client brief / rough prompt: 🎬 MASTER AI VIDEO CREATION PROMPT
+Title: High Emissivity Coating Technology
+Duration: 20 seconds (5 sections × 4 seconds each)
+Audience: Production Managers, Maintenance Managers, Plant Heads, Machine Supervisors
+Tone: Professional, industrial, powerful, clear, practical
+Style: Real industrial environment, high-temperature equipment, cinematic lighting, strong contrast, heat glow effects
+Language: Simple English
+Goal: Clearly explain how High Emissivity Coating improves heat transfer, saves fuel, protects equipment, and reduces maintenance.
+
+Create a 20-second industrial corporate video divided into 5 sections of exactly 4 seconds each. Use realistic industrial visuals such as furnaces, boilers, transformers, kilns, reactors, and heat-generating machines. Show visible heat glow effects and thermal radiation visuals. Include smooth transitions and bold on-screen text highlighting benefits.
+
+The solution is presented by Arnym Eco Green Pvt Ltd (arnymecogreen.com) as an advanced thermal efficiency improvement technology for industrial applications.
+
+🎙️ VOICEOVER SCRIPT (STRICTLY 4 SECONDS EACH)
+🎥 Section 1 (0–4 sec)
+Voiceover:
+“High Emissivity Coating Technology improves heat transfer in your industrial equipment.”
+
+Visual to Generate:
+
+Large industrial furnace or boiler operating at high temperature
+Orange heat glow inside chamber
+Text overlay: “Improve Heat Transfer”
+Subtle thermal radiation animation moving outward
+🎥 Section 2 (4–8 sec)
+Voiceover:
+“It increases thermal radiation, so more heat reaches your process.”
+
+Visual to Generate:
+
+Close-up of coated inner furnace wall
+Heat waves clearly moving toward metal load/material
+Before-and-after split screen (dull surface vs coated glowing surface)
+Text overlay: “More Heat to Load”
+🎥 Section 3 (8–12 sec)
+Voiceover:
+“This means lower fuel consumption and up to ten percent energy savings.”
+
+Visual to Generate:
+
+Fuel gauge decreasing
+Energy meter dropping
+Factory dashboard showing “-10% Fuel”
+Text overlay: “Save Up to 10% Fuel”
+Manager reviewing tablet with energy graph trending downward
+🎥 Section 4 (12–16 sec)
+Voiceover:
+“It protects refractory, reduces scale, and extends equipment life.”
+
+Visual to Generate:
+
+Refractory lining comparison (cracked vs protected coated surface)
+Shield protection animation over furnace lining
+Reduced scale buildup visual
+Text overlay: “Longer Equipment Life”
+🎥 Section 5 (16–20 sec)
+Voiceover:
+“Boost efficiency, reduce downtime, and improve plant performance.”
+
+Visual to Generate:
+
+Confident plant manager inspecting equipment
+Smooth-running production line
+Green efficiency indicator rising
+Text overlay: “Higher Efficiency. Less Downtime.”
+✅ 5-SECOND CTA (20–25 sec)
+Voiceover CTA:
+“Upgrade your thermal efficiency today with Arnym Eco Green. Contact us now.”
+
+CTA Visual to Generate:
+
+Logo of Arnym Eco Green Pvt Ltd
+Industrial furnace background with subtle heat glow
+Text on screen:
+“Reduce Fuel Costs”
+“Extend Equipment Life”
+“Improve Efficiency”
+“arnymecogreen.com”
+“Book a Technical Consultation Today”
+🎨 IMAGE GENERATION GUIDE
+Generate these 5 key industrial visuals:
+
+High-temperature furnace interior with glowing orange heat
+Close-up ceramic coated refractory wall radiating heat waves
+Industrial energy savings dashboard with 10% fuel reduction graphic
+Protected refractory lining with shield effect
+Production manager in PPE inspecting smooth running machinery
+Style:
+
+Realistic industrial photography
+Cinematic lighting
+16:9 ratio
+4K resolution
+Warm orange heat tones
+Professional corporate presentation style
+
+Source article (use this as your primary factual basis):
+---
+Novota
+Experts in high emissivity & functional coatings
+Innovative thermal functional coatings by leading Energy Saving Heat Reflective Paint Manufacturer – Novota.in Call: +918928770345
+Heat Reflective Paint Manufacturer
+Looking to boost your energy efficiency?
+Novota aims to revolutionize the market with innovative functional coatings that prioritize energy efficiency and sustainability. Our expertise lies in enhancing surface emissivity and reflectivity, which results in substantial energy savings in nearly all heat-driven applications.
+Our core strength lies in our ability to develop and produce custom coatings for various industries. We deeply understand that each coating application is unique, and we thrive on creating out-of-the-box processes to meet these unique needs. Our commitment to clear and consistent communication with clients ensures we can tackle even the most complex technological challenges, delivering quality and value every time.
+We value your unique needs and are dedicated to finding the perfect solution for you.
+Comprehensive Range of Thermal Coatings Tailored to Every Unique Need
+HEATXPERSE
+EMISEAL
+SUNSHEETAL
+TEMPSEAL
+NOVOPLAST COLORED PLASTER
+CUSTOM COATING
+Need specialized coatings to address your heat-related challenges?
+Founded in 2007
+Providing full range of innovative thermal coating
+Our technical experts support you from concept to production, ensuring precise and expert fulfillment of your requirements. We continuously advance our coating technologies to stay at the forefront of the industry.
+Our commitment to excellence is evident in our thorough understanding of your needs, collaborative design, and rigorous testing, setting us apart as a leading manufacturer of functional coatings.
+This is what defines us
+Innovation
+Sustainability
+Energy Saving
+Surface Protection
+Maximize Efficiency | Minimize Cost | Magnify Performance
+Our Recent Blog
+Simplifying the Science Behind High Emissivity Coatings
+Top 7 Benefits of Using Heat Reflective Paint
+The Future of Industrial Coatings: Trends and Innovations to Watch
+Heat Reflective Paint Manufacturers
+heat resistant coating for furnace
+Heat Reflective Paint Manufacturer
+high temperature paint manufacturer
+Heat Reflective Paint Manufacturer
+thermal barrier coating India
+Heat Reflective Paint Manufacturer
+boiler coating manufacturer
+Heat Reflective Paint Manufacturer
+kiln coating solutions
+Heat Reflective Paint Manufacturer
+heat reflective paint for roof India
+refractory lining protection coating
+Heat Reflective Paint Manufacturer
+power cable cooling coating
+how to reduce furnace fuel consumption
+what is high emissivity coating used for
+energy saving solutions for cement industry
+how to reduce heat loss in industrial furnaces
+benefits of thermal insulation coating
+heat reflective vs heat insulation coating
+how to cool overhead power lines
+green building coatings India
+EV battery thermal management coatings
+solar panel heat management coating
+---
+
+Write content based on the brief above. If a source article is provided,
+extract the key facts and ideas from it; do not invent details not supported
+by the inputs.
+
+Return a JSON object with these exact fields.
+
+short_copy:
+  150-200 words. Hook in the first line. Platform-neutral. No hashtags.
+
+reel_script:
+  ~140 words (about 60 seconds spoken). Conversational tone.
+  Plain prose only. No stage directions. Read aloud by a TTS voice.
+
+long_chapters:
+  An array of EXACTLY 3 chapters. Together they form a
+  roughly 3-minute spoken script. Each chapter must be 130-170
+  words of plain narration — a complete paragraph with multiple sentences.
+  The chapters together tell a coherent story arc: open with a hook that
+  names the topic and why it matters; develop it across the middle chapters
+  (what it is in plain language, background and context, how it works,
+  concrete real-world examples, and implications); and close the final
+  chapter with the one thing to remember plus a call to action.
+  No chapter titles, no numbers, no markdown, no [stage directions].
+  Each chapter is plain prose that flows naturally when read aloud.
+
+image_prompt:
+  ONE image generation prompt, max 60 words. Style: cinematic, photorealistic.
+  Subject, mood, lighting, color palette, composition.
+
+All fields are required. Return JSON only.
